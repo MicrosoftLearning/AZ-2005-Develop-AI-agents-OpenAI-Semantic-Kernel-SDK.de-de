@@ -104,10 +104,10 @@ In dieser Übung erfahren Sie, wie Sie Ihr erstes Semantic Kernel SDK-Projekt er
     using Microsoft.SemanticKernel;
 
     var builder = Kernel.CreateBuilder();
-    builder.Services.AddAzureOpenAIChatCompletion(
-        "your-resource-name",
+    builder.AddAzureOpenAIChatCompletion(
+        "your-deployment-name",
         "your-endpoint",
-        "your-resource-key",
+        "your-api-key",
         "deployment-model");
     var kernel = builder.Build();
     ```
@@ -554,10 +554,10 @@ In dieser Aufgabe erstellen Sie aus der Handlebars-Planvorlage eine Funktion und
 
     ```c#
     var builder = Kernel.CreateBuilder();
-    builder.Services.AddAzureOpenAIChatCompletion(
-        "your-resource-name",
+    builder.AddAzureOpenAIChatCompletion(
+        "your-deployment-name",
         "your-endpoint",
-        "your-resource-key",
+        "your-api-key",
         "deployment-model");
     var kernel = builder.Build();
     kernel.ImportPluginFromType<MusicLibraryPlugin>();

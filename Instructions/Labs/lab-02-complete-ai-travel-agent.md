@@ -92,7 +92,7 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
     ```csharp
     string yourDeploymentName = "";
     string yourEndpoint = "";
-    string yourKey = "";
+    string yourApiKey = "";
     ```
 
     > [!NOTE]
