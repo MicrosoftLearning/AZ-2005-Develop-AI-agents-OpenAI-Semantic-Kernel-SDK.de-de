@@ -15,9 +15,9 @@ Sie sind ein Entwickler bei einem internationalen Audiostreamingdienst. Sie wurd
 
 ## Ziele
 
-Indem Sie dieses Lab abschließen, führen Sie die folgenden Schritte aus:
+Durch die Bearbeitung dieses Labs führen Sie die folgenden Aufgaben aus:
 
-* Erstellen eines Endpunkts für den LLM-Dienst (Large Language Model, großes Sprachmodell)
+* Erstellen eines Endpunkts für den LLM-Dienst (Large Language Model)
 * Erstellen eines Semantic Kernel-Objekts
 * Ausführen von Prompts mithilfe des Semantic Kernel-SDK
 * Erstellen von Semantic Kernel-Funktionen und Semantic Kernel-Plug-Ins
@@ -39,27 +39,15 @@ Um die Übung durchzuführen, müssen die folgenden Komponenten auf Ihrem System
 Für diese Übungen steht Ihnen ein Einstiegsprojekt zur Verfügung, das Sie verwenden können. Führen Sie die folgenden Schritte aus, um das Einstiegsprojekt einzurichten:
 
 > [!IMPORTANT]
-> Sie müssen .NET Framework 8.0 und ein GitHub-Konto installiert haben, um diese Schritte auszuführen.
+> Sie müssen .NET Framework 8.0 sowie die VS Code-Erweiterungen für C# und den NuGet-Paket-Manager installiert haben.
 
-1. Öffnen Sie Visual Studio Code.
+1. Laden Sie die ZIP-Datei unter `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/01/Lab-01-Starter.zip` herunter.
 
-1. Wählen Sie im Visual Studio Code-Abschnitt **Start** die Option **Git-Repository klonen** aus.
+1. Extrahieren Sie den Inhalt der ZIP-Datei in einen Speicherort, der leicht zu finden und zu merken ist, z. B. in einen Ordner auf Ihrem Desktop.
 
-1. Geben Sie auf der URL-Leiste `https://github.com/MicrosoftLearning/MSLearn-Develop-AI-Agents-with-Azure-OpenAI-and-Semantic-Kernel-SDK.git` ein.
+1. Öffnen Sie Visual Studio Code, und wählen Sie **Datei** > **Ordner öffnen** aus.
 
-1. Erstellen Sie im Datei-Explorer einen neuen Ordner an einem Speicherort, der einfach zu finden und zu merken ist, z. B. einen Ordner auf Ihrem Desktop.
-
-1. Wählen Sie die Schaltfläche **Als Repositoryziel auswählen** aus.
-
-    Sie müssen bei GitHub angemeldet sein, um das Projekt erfolgreich zu klonen.
-
-1. Öffnen Sie das Projekt in Visual Studio Code.
-
-1. Klicken Sie im Explorer mit der rechten Maustaste auf den Ordner **Lab01-create-music-recommendations-agent/Lab01-Project**, und klicken Sie auf **In integriertem Terminal öffnen**.
-
-1. Erweitern Sie den Ordner **Lab01-create-music-recommendations-agent/Lab01-Project**.
-
-    Es sollte eine Datei „Program.cs“ angezeigt werden.
+1. Navigieren Sie zum Ordner **Starter**, den Sie extrahiert haben, und wählen Sie **Ordner auswählen** aus.
 
 1. Öffnen Sie die Datei **Program.cs** im Code-Editor.
 
@@ -69,7 +57,7 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
 
 **Geschätzte Bearbeitungsdauer für die Übung**: 10 Minuten
 
-### Aufgabe 1: Erstellen einer Azure OpenAI-Ressource
+### Aufgabe 1: Erstellen einer Azure OpenAI-Ressource
 
 1. Navigieren Sie zu [https://portal.azure.com](https://portal.azure.com).
 
@@ -82,7 +70,7 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
 
 1. Wählen Sie auf der Seite **Übersicht** die Option **Zu Azure OpenAI Studio wechseln** aus.
 
-:::image type="content" source="../media/model-deployments.png" alt-text="Screenshot der Seite „Azure OpenAI-Bereitstellungen“":::
+:::image type="content" source="../media/model-deployments.png" alt-text="Screenshot: Azure OpenAI-Bereitstellungsseite":::
 
 1. Wählen Sie **Neue Bereitstellung erstellen** und dann **Modell bereitstellen** aus.
 
@@ -102,19 +90,9 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
 
 In dieser Übung erfahren Sie, wie Sie Ihr erstes Semantic Kernel SDK-Projekt erstellen. Sie erfahren, wie Sie ein neues Projekt erstellen, das NuGet-Paket des Semantic Kernel SDK und einen Verweis auf das Semantic Kernel SDK hinzufügen. Legen wir los.
 
-1. Öffnen Sie Visual Studio Code.
+1. Kehren Sie zu Ihrem Visual Studio Code-Projekt zurück.
 
-1. Klicken Sie im Explorer mit der rechten Maustaste auf den Ordner **Lab01-create-music-recommendations-agent/Lab01-Project**, und klicken Sie auf **In integriertem Terminal öffnen**.
-
-1. Erweitern Sie den Ordner **Lab01-create-music-recommendations-agent/Lab01-Project**.
-
-    Es sollte eine Datei „Program.cs“ angezeigt werden.
-
-1. Öffnen Sie die Datei **Program.cs** im Code-Editor.
-
-1. Öffnen Sie das Terminal im Verzeichnis Ihres Projekts.
-
-    Sie können das Terminal öffnen, indem Sie mit der rechten Maustaste auf den Projektordner klicken und „In integriertem Terminal öffnen“ auswählen.
+1. Öffnen Sie das Terminal, indem Sie **Terminal** > **Neues Terminal** auswählen.
 
 1. Führen Sie im Terminal den folgenden Befehl aus, um das Semantic Kernel SDK zu installieren:
 
@@ -126,10 +104,10 @@ In dieser Übung erfahren Sie, wie Sie Ihr erstes Semantic Kernel SDK-Projekt er
     using Microsoft.SemanticKernel;
 
     var builder = Kernel.CreateBuilder();
-    builder.Services.AddAzureOpenAIChatCompletion(
-        "your-resource-name",
+    builder.AddAzureOpenAIChatCompletion(
+        "your-deployment-name",
         "your-endpoint",
-        "your-resource-key",
+        "your-api-key",
         "deployment-model");
     var kernel = builder.Build();
     ```
@@ -198,7 +176,7 @@ In dieser Aufgabe erstellen Sie ein Plug-In, mit dem Sie der Liste „Zuletzt wi
         // Read the existing content from the file
         string filePath = "Files/RecentlyPlayed.txt";
         string jsonContent = File.ReadAllText(filePath);
-        var RecentlyPlayed = (JsonArray) JsonNode.Parse(jsonContent);
+        var recentlyPlayed = (JsonArray) JsonNode.Parse(jsonContent);
 
         var newSong = new JsonObject
         {
@@ -576,10 +554,10 @@ In dieser Aufgabe erstellen Sie aus der Handlebars-Planvorlage eine Funktion und
 
     ```c#
     var builder = Kernel.CreateBuilder();
-    builder.Services.AddAzureOpenAIChatCompletion(
-        "your-resource-name",
+    builder.AddAzureOpenAIChatCompletion(
+        "your-deployment-name",
         "your-endpoint",
-        "your-resource-key",
+        "your-api-key",
         "deployment-model");
     var kernel = builder.Build();
     kernel.ImportPluginFromType<MusicLibraryPlugin>();

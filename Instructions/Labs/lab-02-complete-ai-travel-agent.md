@@ -38,27 +38,15 @@ Um die Übung durchzuführen, müssen die folgenden Komponenten auf Ihrem System
 Für diese Übungen steht Ihnen ein Einstiegsprojekt zur Verfügung, das Sie verwenden können. Führen Sie die folgenden Schritte aus, um das Einstiegsprojekt einzurichten:
 
 > [!IMPORTANT]
-> Sie müssen .NET Framework 8.0 und ein GitHub-Konto installiert haben, um diese Schritte auszuführen.
+> Sie müssen .NET Framework 8.0 sowie die VS Code-Erweiterungen für C# und den NuGet-Paket-Manager installiert haben.
 
-1. Öffnen Sie Visual Studio Code.
+1. Laden Sie die ZIP-Datei unter `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/02/Lab-02-Starter.zip` herunter.
 
-1. Wählen Sie im Visual Studio Code-Abschnitt **Start** die Option **Git-Repository klonen** aus.
+1. Extrahieren Sie den Inhalt der ZIP-Datei in einen Speicherort, der leicht zu finden und zu merken ist, z. B. in einen Ordner auf Ihrem Desktop.
 
-1. Geben Sie auf der URL-Leiste `https://github.com/MicrosoftLearning/MSLearn-Develop-AI-Agents-with-Azure-OpenAI-and-Semantic-Kernel-SDK.git` ein.
+1. Öffnen Sie Visual Studio Code, und wählen Sie **Datei** > **Ordner öffnen** aus.
 
-1. Erstellen Sie im Datei-Explorer einen neuen Ordner an einem Speicherort, der einfach zu finden und zu merken ist, z. B. einen Ordner auf Ihrem Desktop.
-
-1. Wählen Sie die Schaltfläche **Als Repositoryziel auswählen** aus.
-
-    Sie müssen bei GitHub angemeldet sein, um das Projekt erfolgreich zu klonen.
-
-1. Öffnen Sie das Projekt in Visual Studio Code.
-
-1. Klicken Sie im Explorer mit der rechten Maustaste auf den Ordner **Lab01-create-music-recommendations-agent/Lab01-Project**, und klicken Sie dann auf **In integriertes Terminal öffnen**.
-
-1. Erweitern Sie den Ordner **Lab01-create-music-recommendations-agent/Lab01-Project**.
-
-    Es sollte eine Datei „Program.cs“ angezeigt werden.
+1. Navigieren Sie zum Ordner **Starter**, den Sie extrahiert haben, und wählen Sie **Ordner auswählen** aus.
 
 1. Öffnen Sie die Datei **Program.cs** im Code-Editor.
 
@@ -97,14 +85,14 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
 
     Sie verwenden diese Werte in der nächsten Aufgabe, um Ihren Kernel zu erstellen. Denken Sie daran, Ihre Schlüssel privat und sicher aufzubewahren.
 
-1. Öffnen Sie die Datei **Program.cs** in Visual Studio Code.
+1. Kehren Sie zur Datei **Program.cs** in Visual Studio Code zurück.
 
 1. Aktualisieren Sie die folgenden Variablen mit ihrem Azure OpenAI Services-Bereitstellungsnamen, API-Schlüssel und Endpunkt.
 
     ```csharp
     string yourDeploymentName = "";
     string yourEndpoint = "";
-    string yourKey = "";
+    string yourApiKey = "";
     ```
 
     > [!NOTE]
