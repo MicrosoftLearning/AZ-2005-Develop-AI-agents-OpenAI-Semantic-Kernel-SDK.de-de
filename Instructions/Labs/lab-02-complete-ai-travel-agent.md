@@ -71,9 +71,9 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
 
 :::image type="content" source="../media/model-deployments.png" alt-text="Screenshot: Azure OpenAI-Bereitstellungsseite":::
 
-1. Wählen Sie **Neue Bereitstellung erstellen** und dann **Modell bereitstellen** aus.
+1. Wählen Sie **Neue Bereitstellung erstellen** und wählen Sie dann **+Neue Bereitstellung erstellen**.
 
-1. Wählen Sie unter **Modell auswählen** **gpt-35-turbo-16k** aus.
+1. Wählen Sie im Popup-Fenster **Modell bereitstellen** die Option **gpt-35-turbo-16k**.
 
     Verwenden der Standardmodellversion
 
@@ -108,6 +108,8 @@ In dieser Aufgabe erstellen Sie eine native Funktion, die einen Betrag aus einer
 
     ```c#
     using AITravelAgent;
+    using System.ComponentModel;
+    using Microsoft.SemanticKernel;
 
     class CurrencyConverter
     {
@@ -247,6 +249,7 @@ In dieser Aufgabe führen Sie Ihre Anwendung aus und überprüfen, ob der Code o
 
     ```c#
     kernel.ImportPluginFromType<CurrencyConverter>();
+    kernel.ImportPluginFromType<ConversationSummaryPlugin>();
     var prompts = kernel.ImportPluginFromPromptDirectory("Prompts");
 
     var result = await kernel.InvokeAsync(prompts["GetTargetCurrencies"],
@@ -281,6 +284,7 @@ In dieser Übung erkennen Sie die Absicht des Benutzers und leiten die Unterhalt
 
     ```c#
     kernel.ImportPluginFromType<CurrencyConverter>();
+    kernel.ImportPluginFromType<ConversationSummaryPlugin>();
     var prompts = kernel.ImportPluginFromPromptDirectory("Prompts");
 
     Console.WriteLine("What would you like to do?");
@@ -331,6 +335,7 @@ In dieser Übung erkennen Sie die Absicht des Benutzers und leiten die Unterhalt
 
     ```c#
     kernel.ImportPluginFromType<CurrencyConverter>();
+    kernel.ImportPluginFromType<ConversationSummaryPlugin>();
     var prompts = kernel.ImportPluginFromPromptDirectory("Prompts");
 
     OpenAIPromptExecutionSettings settings = new()
@@ -526,12 +531,12 @@ In dieser Übung verwenden Sie den Unterhaltungsverlauf, um Kontext für das Lar
           "description": "The destination a user wants to visit",
           "required": true
       }
-  ]
-  ```
+   ]
+   ```
 
 1. Navigieren Sie zu **Prompts/SuggestActivities/skprompt.txt** und öffnen Sie die Datei
 
-1. Fügen Sie einen Prompt hinzu, um den Chatverlauf zu verwenden:
+1. Ersetzen Sie die erste Hälfte der Eingabeaufforderung durch die folgende Eingabeaufforderung, die die Variable Chatverlauf verwendet:
 
     ```html 
     You are an experienced travel agent. 
