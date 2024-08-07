@@ -30,7 +30,7 @@ Durch die Bearbeitung dieses Labs führen Sie die folgenden Aufgaben aus:
 Um die Übung durchzuführen, müssen die folgenden Komponenten auf Ihrem System installiert sein:
 
 * [Visual Studio Code](https://code.visualstudio.com)
-* [Das aktuelle .NET 7.0 SDK](https://dotnet.microsoft.com/download/dotnet/7.0)
+* [Das aktuelle .NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 * [Die C#-Erweiterung](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) für Visual Studio Code
 
 
@@ -41,7 +41,11 @@ Für diese Übungen steht Ihnen ein Einstiegsprojekt zur Verfügung, das Sie ver
 > [!IMPORTANT]
 > Sie müssen .NET Framework 8.0 sowie die VS Code-Erweiterungen für C# und den NuGet-Paket-Manager installiert haben.
 
-1. Laden Sie die ZIP-Datei unter `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/01/Lab-01-Starter.zip` herunter.
+1. Fügen Sie den folgenden Link in einem neuen Browserfenster ein:
+   
+     `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/01/Lab-01-Starter.zip`
+
+1. Laden Sie die ZIP-Datei herunter, indem Sie auf die `...` Schaltfläche klicken, die sich auf der oberen rechten Seite der Seite befindet, oder drücken Sie <kbd>STRG</kbd>+<kbd>UMSCHALT</kbd>+<kbd>S.</kbd>
 
 1. Extrahieren Sie den Inhalt der ZIP-Datei in einen Speicherort, der leicht zu finden und zu merken ist, z. B. in einen Ordner auf Ihrem Desktop.
 
@@ -50,6 +54,9 @@ Für diese Übungen steht Ihnen ein Einstiegsprojekt zur Verfügung, das Sie ver
 1. Navigieren Sie zum Ordner **Starter**, den Sie extrahiert haben, und wählen Sie **Ordner auswählen** aus.
 
 1. Öffnen Sie die Datei **Program.cs** im Code-Editor.
+
+> [!NOTE]
+> Wenn Sie aufgefordert werden, den Dateien im Ordner zu vertrauen, wählen Sie **Ja, ich vertraue den Autoren** aus. 
 
 ## Übung 1: Ausführen eines Prompts mit dem Semantic Kernel-SDK
 
@@ -122,7 +129,7 @@ In dieser Übung erfahren Sie, wie Sie Ihr erstes Semantic Kernel SDK-Projekt er
     Console.WriteLine(result);
     ```
 
-1. Führen Sie den Code aus, und überprüfen Sie, ob eine Antwort des Azure OpenAI-Modells angezeigt wird, das die fünf bekanntesten Musiker der Welt enthält.
+1. Geben Sie `dotnet run` ein, um den Code auszuführen, und überprüfen Sie, ob eine Antwort des Azure OpenAI-Modells angezeigt wird, das die fünf bekanntesten Musikerinnen und Musiker der Welt enthält.
 
     Die Antwort stammt aus dem Azure Open AI-Modell, das Sie an den Kernel übergeben haben. Das Semantic Kernel SDK kann eine Verbindung mit dem großen Sprachmodell (LLM) herstellen und die Eingabeaufforderung ausführen. Beachten Sie, wie schnell Sie Antworten vom LLM erhalten haben. Das Semantic Kernel SDK macht das Erstellen intelligenter Anwendungen einfach und effizient.
 
@@ -224,7 +231,7 @@ In dieser Aufgabe erstellen Sie ein Plug-In, mit dem Sie der Liste „Zuletzt wi
     Added 'Danse' to recently played
     ```
 
-    Wenn Sie „RecentlyPlayed.txt“ öffnen, sollte der neue Song der Liste hinzugefügt werden.
+    Wenn Sie „Files/RecentlyPlayed.txt“ öffnen, sollte der neue Song der Liste hinzugefügt werden.
 
 ### Aufgabe 2: Abgeben personalisierter Songempfehlungen
 
@@ -311,10 +318,10 @@ In dieser Aufgabe erstellen Sie ein Plug-In, das Details zu anstehenden Konzerte
     using System.ComponentModel;
     using Microsoft.SemanticKernel;
 
-    public class MusicConcertPlugin
+    public class MusicConcertsPlugin
     {
         [KernelFunction, Description("Get a list of upcoming concerts")]
-        public static string GetTours()
+        public static string GetConcerts()
         {
             string content = File.ReadAllText($"Files/ConcertDates.txt");
             return content;
@@ -417,11 +424,21 @@ In dieser Aufgabe generieren Sie mithilfe des Handlebars-Planers eine Planvorlag
 1. Aktualisieren Sie Ihren Code in der Datei „Program.cs“ wie folgt:
 
     ```c#
+    using Microsoft.SemanticKernel;
+    using Microsoft.SemanticKernel.Planning.Handlebars;
+    
+    var builder = Kernel.CreateBuilder();
+    builder.AddAzureOpenAIChatCompletion(
+        "your-deployment-name",
+        "your-endpoint",
+        "your-api-key",
+        "deployment-model");
     var kernel = builder.Build();
     kernel.ImportPluginFromType<MusicLibraryPlugin>();
-    kernel.ImportPluginFromType<MusicConcertPlugin>();
+    kernel.ImportPluginFromType<MusicConcertsPlugin>();
     kernel.ImportPluginFromPromptDirectory("Prompts");
 
+    #pragma warning disable SKEXP0060
     var planner = new HandlebarsPlanner(new HandlebarsPlannerOptions() { AllowLoops = true });
 
     string location = "Redmond WA USA";
@@ -433,6 +450,8 @@ In dieser Aufgabe generieren Sie mithilfe des Handlebars-Planers eine Planvorlag
 
     Console.WriteLine($"{result}");
     ```
+
+    >[!NOTE] Da sich das Handlebars-Paket derzeit in der Vorschau befindet, müssen Sie möglicherweise die Compilerwarnung unterdrücken, um den Code auszuführen.
 
 1. Geben Sie im Terminal `dotnet run` ein.
 
@@ -512,7 +531,7 @@ In dieser Aufgabe generieren Sie mithilfe des Handlebars-Planers eine Planvorlag
 
     Als Nächstes verwenden Sie diese generierte Vorlage, um Ihren eigenen Handlebars-Plan zu erstellen. 
 
-1. Erstellen Sie eine neue Datei namens „handlebarsTemplate.txt“ mit dem folgenden Text:
+1. Erstellen Sie im Verzeichnis „Files“ eine neue Datei namens „HandlebarsTemplate.txt“ mit dem folgenden Text:
 
     ```output
     {{set "addSong" addSong}}
@@ -553,6 +572,9 @@ In dieser Aufgabe erstellen Sie aus der Handlebars-Planvorlage eine Funktion und
 1. Entfernen Sie die Handlebars-Pläne, indem Sie Ihren vorhandenen Code ändern:
 
     ```c#
+    using Microsoft.SemanticKernel;
+    using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
+
     var builder = Kernel.CreateBuilder();
     builder.AddAzureOpenAIChatCompletion(
         "your-deployment-name",
@@ -579,7 +601,7 @@ In dieser Aufgabe erstellen Sie aus der Handlebars-Planvorlage eine Funktion und
 1. Fügen Sie Code hinzu, der die Vorlagendatei liest und eine Funktion erstellt:
 
     ```c#
-    string template = File.ReadAllText($"handlebarsTemplate.txt");
+    string template = File.ReadAllText($"Files/HandlebarsTemplate.txt");
 
     var handlebarsPromptFunction = kernel.CreateFunctionFromPrompt(
         new() {
