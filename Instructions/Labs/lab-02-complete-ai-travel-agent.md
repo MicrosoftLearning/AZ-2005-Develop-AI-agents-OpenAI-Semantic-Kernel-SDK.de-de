@@ -30,7 +30,7 @@ Durch die Bearbeitung dieses Labs führen Sie die folgenden Aufgaben aus:
 Um die Übung durchzuführen, müssen die folgenden Komponenten auf Ihrem System installiert sein:
 
 * [Visual Studio Code](https://code.visualstudio.com)
-* [Das aktuelle .NET 7.0 SDK](https://dotnet.microsoft.com/download/dotnet/7.0)
+* [Das aktuelle .NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 * [Die C#-Erweiterung](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) für Visual Studio Code
 
 ### Vorbereiten Ihrer Entwicklungsumgebung
@@ -40,7 +40,11 @@ Für diese Übungen steht Ihnen ein Einstiegsprojekt zur Verfügung, das Sie ver
 > [!IMPORTANT]
 > Sie müssen .NET Framework 8.0 sowie die VS Code-Erweiterungen für C# und den NuGet-Paket-Manager installiert haben.
 
-1. Laden Sie die ZIP-Datei unter `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/02/Lab-02-Starter.zip` herunter.
+1. Fügen Sie den folgenden Link in einem neuen Browserfenster ein:
+   
+     `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/02/Lab-02-Starter.zip`
+
+1. Laden Sie die ZIP-Datei herunter, indem Sie auf die Schaltfläche <kbd>...</kbd> klicken, die sich auf der oberen rechten Seite der Seite befindet, oder drücken Sie <kbd>STRG</kbd>+<kbd>UMSCHALT</kbd>+<kbd>S</kbd>.
 
 1. Extrahieren Sie den Inhalt der ZIP-Datei in einen Speicherort, der leicht zu finden und zu merken ist, z. B. in einen Ordner auf Ihrem Desktop.
 
@@ -49,6 +53,9 @@ Für diese Übungen steht Ihnen ein Einstiegsprojekt zur Verfügung, das Sie ver
 1. Navigieren Sie zum Ordner **Starter**, den Sie extrahiert haben, und wählen Sie **Ordner auswählen** aus.
 
 1. Öffnen Sie die Datei **Program.cs** im Code-Editor.
+
+> [!NOTE]
+> Wenn Sie aufgefordert werden, den Dateien im Ordner zu vertrauen, wählen Sie **Ja, ich vertraue den Autoren** aus.
 
 ## Übung 1: Erstellen eines Plug-Ins mit dem Semantic Kernel-SDK
 
@@ -102,9 +109,9 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
 
 In dieser Aufgabe erstellen Sie eine native Funktion, die einen Betrag aus einer Basiswährung in eine Zielwährung umrechnen kann.
 
-1. Erstellen einer neuen Datei namens `CurrencyConverter.cs` im **Plugins/ConvertCurrency**-Ordner
+1. Erstellen einer neuen Datei namens **CurrencyConverter.cs** im Ordner **Plugins/ConvertCurrency**
 
-1. Fügen Sie in der `CurrencyConverter.cs`-Datei den folgenden Code hinzu, um eine Plug-In-Funktion zu erstellen:
+1. Fügen Sie in der Datei **CurrencyConverter.cs** den folgenden Code hinzu, um eine Plug-In-Funktion zu erstellen:
 
     ```c#
     using AITravelAgent;
@@ -122,9 +129,9 @@ In dieser Aufgabe erstellen Sie eine native Funktion, die einen Betrag aus einer
     }
     ```
 
-    In diesem Code verwenden Sie den `KernelFunction`-Decorator, um Ihre systemeigene Funktion zu deklarieren. Sie verwenden auch den `Description`-Decorator, um eine Beschreibung der Funktion hinzuzufügen. Sie können `Currency.Currencies` verwenden, um ein Wörterbuch mit Währungen und deren Wechselkursen zu erhalten. Fügen Sie als Nächstes eine Logik hinzu, um einen bestimmten Betrag von einer Währung in eine andere zu konvertieren.
+    In diesem Code verwenden Sie den Decorator **KernelFunction**, um Ihre systemeigene Funktion zu deklarieren. Sie verwenden auch den **Description**-Decorator, um eine Beschreibung der Funktion hinzuzufügen. Sie können **Currency.Currencies** verwenden, um ein Wörterbuch mit Währungen und deren Wechselkursen zu erhalten. Fügen Sie als Nächstes eine Logik hinzu, um einen bestimmten Betrag von einer Währung in eine andere zu konvertieren.
 
-1. Ändern Sie Ihre `ConvertAmount`-Funktion mit folgendem Code:
+1. Ändern Sie Ihre **ConvertAmount**-Funktion mit folgendem Code:
 
     ```c#
     [KernelFunction, Description("Convert an amount from one currency to another")]
@@ -156,9 +163,9 @@ In dieser Aufgabe erstellen Sie eine native Funktion, die einen Betrag aus einer
     }
     ```
 
-    In diesem Code verwenden Sie das `Currency.Currencies`-Wörterbuch, um das Objekt für die `Currency`-Ziel- und Basiswährungen abzurufen. Anschließend verwenden Sie das `Currency`-Objekt, um den Betrag aus der Basiswährung in die Zielwährung zu konvertieren. Schließlich geben Sie eine Zeichenfolge mit dem konvertierten Betrag zurück. Als Nächstes testen wir Ihr Plug-In.
+    In diesem Code verwenden Sie das Wörterbuch **Currency.Currencies**, um das Objekt **Currency** für die Ziel- und Basiswährungen abzurufen. Anschließend verwenden Sie das **Currency**-Objekt, um den Betrag aus der Basiswährung in die Zielwährung zu konvertieren. Schließlich geben Sie eine Zeichenfolge mit dem konvertierten Betrag zurück. Als Nächstes testen wir Ihr Plug-In.
 
-1. Importieren und aufrufen Sie in der `Program.cs`-Datei die neue Plug-In-Funktion mit dem folgenden Code:
+1. Importieren und aufrufen Sie in der **Program.cs**-Datei die neue Plug-In-Funktion mit dem folgenden Code:
 
     ```c#
     kernel.ImportPluginFromType<CurrencyConverter>();
@@ -177,7 +184,7 @@ In dieser Aufgabe erstellen Sie eine native Funktion, die einen Betrag aus einer
     Console.WriteLine(result);
     ```
 
-    In diesem Code verwenden Sie die `ImportPluginFromType`-Methode, um Ihr Plug-In zu importieren. Anschließend verwenden Sie die `InvokeAsync`-Methode, um Ihre Plug-In-Funktion aufzurufen. Die `InvokeAsync`-Methode verwendet den Plug-In-Namen, den Funktionsnamen und ein Wörterbuch mit Parametern. Schließlich drucken Sie das Ergebnis in der Konsole. Führen Sie als Nächstes den Code aus, um sicherzustellen, dass er funktioniert.
+    In diesem Code verwenden Sie die **ImportPluginFromType**-Methode, um Ihr Plug-In zu importieren. Anschließend verwenden Sie die **InvokeAsync**-Methode, um Ihre Plug-In-Funktion aufzurufen. Die **InvokeAsync**-Methode verwendet den Plug-In-Namen, den Funktionsnamen und ein Wörterbuch mit Parametern. Schließlich drucken Sie das Ergebnis in der Konsole. Führen Sie als Nächstes den Code aus, um sicherzustellen, dass er funktioniert.
 
 1. Geben Sie im Terminal `dotnet run` ein. Die folgende Ausgabe wird angezeigt.
 
@@ -191,11 +198,11 @@ In dieser Aufgabe erstellen Sie eine native Funktion, die einen Betrag aus einer
 
 In dieser Aufgabe erstellen Sie eine Eingabeaufforderung, welche die Eingabe des Benutzers analysiert, um die Zielwährung, Basiswährung und den zu konvertierenden Betrag zu identifizieren.
 
-1. Erstellen eines neuen Ordners namens `GetTargetCurrencies` im Ordner **Eingabeaufforderung**
+1. Erstellen eines neuen Ordners namens **GetTargetCurrencies** im Ordner **Eingabeaufforderung**
 
-1. Erstellen Sie im Ordner `GetTargetCurrencies` eine neue Datei namens `config.json`
+1. Erstellen Sie im Ordner **GetTargetCurrencies** eine neue Datei namens **config.json**
 
-1. Fügen Sie den folgenden Text in die `config.json`-Datei ein:
+1. Fügen Sie den folgenden Text in die Datei **config.json** ein:
 
     ```output
     {
@@ -218,9 +225,9 @@ In dieser Aufgabe erstellen Sie eine Eingabeaufforderung, welche die Eingabe des
     }
     ```
 
-1. Erstellen Sie im Ordner `GetTargetCurrencies` eine neue Datei namens `skprompt.txt`
+1. Erstellen Sie im Ordner **GetTargetCurrencies** eine neue Datei mit dem Namen **skprompt.txt**
 
-1. Fügen Sie den folgenden Text in die `skprompt.txt`-Datei ein:
+1. Fügen Sie den folgenden Text in die **skprompt.txt**-Datei ein:
 
     ```html
     <message role="system">Identify the target currency, base currency, and 
@@ -245,7 +252,7 @@ In dieser Aufgabe erstellen Sie eine Eingabeaufforderung, welche die Eingabe des
 
 In dieser Aufgabe führen Sie Ihre Anwendung aus und überprüfen, ob der Code ordnungsgemäß funktioniert. 
 
-1. Testen Sie Ihre neue Aufforderung, indem Sie die `Program.cs`-Datei mit dem folgenden Code aktualisieren:
+1. Testen Sie Ihre neue Aufforderung, indem Sie Ihrer **Program.cs**-Datei mit dem folgenden Code aktualisieren:
 
     ```c#
     kernel.ImportPluginFromType<CurrencyConverter>();
@@ -268,9 +275,9 @@ In dieser Aufgabe führen Sie Ihre Anwendung aus und überprüfen, ob der Code o
     ```
 
     > [!NOTE]
-    > Wenn Ihr Code die erwartete Ausgabe nicht erzeugt, können Sie den Code im **Lösungsordner** überprüfen. Möglicherweise müssen Sie de Prompt in der Datei `skprompt.txt` anpassen, um genauere Ergebnisse zu erzielen.
+    > Wenn Ihr Code die erwartete Ausgabe nicht erzeugt, können Sie den Code im **Lösungsordner** überprüfen. Möglicherweise müssen Sie die Eingabeaufforderung in der **skprompt.txt**-Datei anpassen, um genauere Ergebnisse zu erzielen.
 
-Jetzt haben Sie ein Plug-In, das einen Betrag von einer Währung in eine andere konvertieren kann, und eine Eingabeaufforderung, die verwendet werden kann, um die Eingabe des Benutzers in ein Format zu analysieren, das die `ConvertAmount`-Funktion verwenden kann. Auf diese Weise können Benutzer und Benutzerinnen Währungsbeträge einfach mit Ihrem KI-Reisebüro konvertieren.
+Jetzt haben Sie ein Plug-In, das einen Betrag von einer Währung in eine andere konvertieren kann, und eine Eingabeaufforderung, die verwendet werden kann, um die Eingabe der Benutzerinnen und Benutzer in ein Format zu analysieren, das die **ConvertAmount**-Funktion verwenden kann. Auf diese Weise können Benutzer und Benutzerinnen Währungsbeträge einfach mit Ihrem KI-Reisebüro konvertieren.
 
 ## Übung 2: Automatisieren der Plug-In-Auswahl basierend auf der Benutzerabsicht
 
@@ -280,7 +287,7 @@ In dieser Übung erkennen Sie die Absicht des Benutzers und leiten die Unterhalt
 
 ### Aufgabe 1: Verwenden des GetIntent-Plug-Ins
 
-1. Aktualisieren Sie Ihre`Program.cs`-Datei mit folgendem Code:
+1. Aktualisieren Sie die Datei **Program.cs** mit dem folgenden Code:
 
     ```c#
     kernel.ImportPluginFromType<CurrencyConverter>();
@@ -297,7 +304,7 @@ In dieser Übung erkennen Sie die Absicht des Benutzers und leiten die Unterhalt
 
     ```
 
-    In diesem Code verwenden Sie die `GetIntent`-Eingabeaufforderung, um die Absicht des Benutzers zu erkennen. Anschließend speichern Sie die Absicht in einer Variablen namens `intent`. Als Nächstes leiten Sie die Absicht an Ihr `CurrencyConverter`-Plug-In weiter.
+    In diesem Code verwenden Sie die **GetIntent**-Eingabeaufforderung, um die Absicht der Benutzerinnen und Benutzer zu erkennen. Anschließend speichern Sie die Absicht in einer Variablen namens **intent**. Als Nächstes leiten Sie die Absicht an Ihr **CurrencyConverter**-Plug-In weiter.
 
 1. Fügen Sie Ihrer Datei `Program.cs` den folgenden Code hinzu:
 
@@ -325,13 +332,13 @@ In dieser Übung erkennen Sie die Absicht des Benutzers und leiten die Unterhalt
     }
     ```
 
-    Das `GetIntent`-Plug-In gibt die folgenden Werte zurück: ConvertCurrency, SuggestDestinations, SuggestActivities, Translate, HelpfulPhrases, Unknown. Sie verwenden eine `switch`-Anweisung, um die Absicht des Benutzers an das entsprechende Plug-In weiterzuleiten. 
+    Das **GetIntent**-Plug-In gibt die folgenden Werte zurück: ConvertCurrency, SuggestDestinations, SuggestActivities, Translate, HelpfulPhrases, Unknown. Sie verwenden eine **switch**-Anweisung, um die Absicht der Benutzerinnen und Benutzer an das entsprechende Plug-In weiterzuleiten. 
     
-    Wenn der Benutzer die Währung konvertieren möchte, verwenden Sie die `GetTargetCurrencies`-Eingabeaufforderung, um die Währungsinformationen abzurufen. Anschließend verwenden Sie das `CurrencyConverter`-Plug-In, um den Betrag zu konvertieren.
+    Wenn die Benutzenden die Absicht haben, eine Währung umzurechnen, verwenden Sie den Prompt **GetTargetCurrencies**, um die Währungsinformationen abzurufen. Anschließend verwenden Sie das Plug-In **CurrencyConverter**, um den Betrag umzurechnen.
 
     Als Nächstes fügen Sie einige Fälle hinzu, um die anderen Absichten zu behandeln. Verwenden wir nun die automatische Funktionsaufruffunktion des semantischen Kernel-SDK, um die Absicht an die verfügbaren Plug-Ins weiterzuleiten.
 
-1. Erstellen Sie die Einstellung für den automatischen Funktionsaufruf, indem Sie der `Program.cs`-Datei den folgenden Code hinzufügen:
+1. Legen Sie die Einstellung für den automatischen Funktionsaufruf fest, indem Sie den folgenden Code in Ihre Datei **Program.cs** einfügen:
 
     ```c#
     kernel.ImportPluginFromType<CurrencyConverter>();
@@ -353,7 +360,7 @@ In dieser Übung erkennen Sie die Absicht des Benutzers und leiten die Unterhalt
 
     Als Nächstes fügen Sie der Switch-Anweisung Fälle für die anderen Absichten hinzu.
 
-1. Aktualisieren Sie Ihre`Program.cs`-Datei mit folgendem Code:
+1. Aktualisieren Sie die Datei **Program.cs** mit dem folgenden Code:
 
     ```c#
     switch (intent) {
@@ -373,9 +380,9 @@ In dieser Übung erkennen Sie die Absicht des Benutzers und leiten die Unterhalt
     }
     ```
 
-    In diesem Code verwenden Sie die `AutoInvokeKernelFunctions`-Einstellung, um automatisch Funktionen und Eingabeaufforderungen aufzurufen, auf die in Ihrem Kernel verwiesen wird. Wenn der Benutzer die Währung konvertieren möchte, führt das `CurrencyConverter`-Plug-In seine Aufgabe aus. 
+    In diesem Code verwenden Sie die Einstellung **AutoInvokeKernelFunctions**, um automatisch Funktionen und Prompts aufzurufen, auf die in Ihrem Kernel verwiesen wird. Wenn die Benutzenden die Absicht haben, eine Währung umzurechnen, übernimmt das Plug-In **CurrencyConverter** diese Aufgabe. 
     
-    Wenn der Benutzer Beabsichtigt ist, Ziel- oder Aktivitätsvorschläge abzurufen, einen Ausdruck zu übersetzen oder hilfreiche Ausdrücke in einer Sprache zu erhalten, ruft die `AutoInvokeKernelFunctions`-Einstellung automatisch die vorhandenen Plug-Ins auf, die im Projektcode enthalten waren.
+    Wenn die Absicht der Benutzenden darin besteht, Ziel- oder Aktivitätsvorschläge zu erhalten, eine Phrase zu übersetzen oder hilfreiche Phrasen in einer Sprache zu erhalten, ruft die Einstellung **AutoInvokeKernelFunctions** automatisch die vorhandenen Plug-Ins auf, die im Projektcode enthalten waren.
 
     Sie können auch Code hinzufügen, um die Benutzereingabe als Eingabeaufforderung für das große Sprachmodell (LLM) auszuführen, wenn sie nicht unter einen dieser Absichtsfälle fällt.
 
@@ -455,7 +462,7 @@ Lassen Sie uns als Nächstes die Routinglogik ändern, um bestimmten Plug-Ins ei
 
 In dieser Übung verwenden Sie den Unterhaltungsverlauf, um Kontext für das Large Language Model (LLM) bereitzustellen. Sie passen den Code auch so an, dass der Benutzer die Unterhaltung fortsetzen kann, genau wie bei einem echten Chatbot. Legen wir los.
 
-1. Verändern Sie den Code so, dass eine `do`-`while` Schleife verwendet wird, um die Eingabe des Benutzers zu akzeptieren:
+1. Ändern Sie den Code so, dass er eine Do-While-Schleife verwendet, um die Eingaben der Benutzenden zu akzeptieren:
 
     ```c#
     string input;
@@ -472,7 +479,7 @@ In dieser Übung verwenden Sie den Unterhaltungsverlauf, um Kontext für das Lar
 
     Jetzt können Sie die Unterhaltung beibehalten, bis der Benutzer eine Leerzeile eingibt.
 
-1. Erfassen Sie Einzelheiten zur Reise des Benutzers, indem Sie den Fall `SuggestDestinations` verändern:
+1. Erfassen Sie Details über die Reise der Benutzenden, indem Sie den Fall **SuggestDestinations** wie folgt ändern:
 
     ```c#
     case "SuggestDestinations":
@@ -482,7 +489,7 @@ In dieser Übung verwenden Sie den Unterhaltungsverlauf, um Kontext für das Lar
         break;
     ```
 
-1. Verwenden Sie die Reisedetails im Fall `SuggestActivities` mit dem folgenden Code:
+1. Verwenden Sie die Reisedetails im Fall **SuggestActivities** mit dem folgenden Code:
 
     ```c#
      case "SuggestActivities":
@@ -493,9 +500,9 @@ In dieser Übung verwenden Sie den Unterhaltungsverlauf, um Kontext für das Lar
         break;
     ```
 
-    In diesem Code verwenden Sie die integrierte `SummarizeConversation` Funktion, um den Chat mit dem Benutzer zusammenzufassen. Als Nächstes verwenden wir die Zusammenfassung, um Aktivitäten am Reiseziel vorzuschlagen.
+    In diesem Code verwenden Sie die integrierte Funktion **SummarizeConversation**, um den Chat mit den Benutzenden zusammenzufassen. Als Nächstes verwenden wir die Zusammenfassung, um Aktivitäten am Reiseziel vorzuschlagen.
 
-1. Erweitern Sie den Fall `SuggestActivities` mit dem folgenden Code:
+1. Erweitern Sie den Fall **SuggestActivities** mit dem folgenden Code:
 
     ```c#
     var activities = await kernel.InvokePromptAsync(
@@ -513,11 +520,11 @@ In dieser Übung verwenden Sie den Unterhaltungsverlauf, um Kontext für das Lar
     break;
     ```
 
-    In diesem Code fügen Sie `input` und `chatSummary` als Kernelargumente hinzu. Anschließend ruft der Kernel den Prompt auf und leitet ihn an das Plug-In `SuggestActivities` weiter. Außerdem hängen Sie die Eingabe des Benutzers und die Antwort des Assistenten zum Chatverlauf an und zeigen die Ergebnisse an. Als Nächstes müssen Sie die `chatSummary` Variable zum `SuggestActivities` Plug-In hinzufügen.
+    In diesem Code fügen Sie **input** und **chatSummary** als Kernelargumente hinzu. Dann ruft der Kernel den Prompt auf und leitet ihn an das Plug-In **SuggestActivities** weiter. Außerdem hängen Sie die Eingabe des Benutzers und die Antwort des Assistenten zum Chatverlauf an und zeigen die Ergebnisse an. Als nächstes müssen Sie die Variable **chatSummary** zum Plug-In **SuggestActivities** hinzufügen.
 
 1. Navigieren Sie zu **Prompts/SuggestActivities/config.json** und öffnen Sie die Datei in Visual Studio Code
 
-1. Fügen Sie unter `input_variables` eine Variable für den Chatverlauf hinzu:
+1. Fügen Sie unter **input_variables** eine Variable für den Chatverlauf hinzu:
 
     ```json
     "input_variables": [
