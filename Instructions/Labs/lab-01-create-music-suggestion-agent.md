@@ -145,7 +145,7 @@ In dieser Aufgabe erstellen Sie ein Plug-In, mit dem Sie der Liste „Zuletzt wi
 
 1. Erstellen Sie einen neuen Ordner im Verzeichnis „Lab01-Project“, und nennen Sie ihn „Plugins“.
 
-1. Erstellen Sie im Ordner „Plug-Ins“ eine neue Datei „MusicLibrary.cs“
+1. Erstellen Sie im Ordner „Plugins“ eine neue Datei „MusicLibraryPlugin.cs“
 
     Erstellen Sie zunächst einige schnelle Funktionen, um Songs zur Liste „Zuletzt wiedergegeben“ des Benutzers abzurufen und hinzuzufügen.
 
@@ -232,6 +232,9 @@ In dieser Aufgabe erstellen Sie ein Plug-In, mit dem Sie der Liste „Zuletzt wi
     ```
 
     Wenn Sie „Files/RecentlyPlayed.txt“ öffnen, sollte der neue Song der Liste hinzugefügt werden.
+
+> [!NOTE]
+> Wenn das Terminal Warnungen für Nullwerte anzeigt, können Sie diese ignorieren, da sie das Ergebnis nicht beeinflussen.
 
 ### Aufgabe 2: Abgeben personalisierter Songempfehlungen
 
