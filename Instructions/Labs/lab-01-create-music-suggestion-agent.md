@@ -21,7 +21,7 @@ Durch die Bearbeitung dieses Labs führen Sie die folgenden Aufgaben aus:
 * Erstellen eines Semantic Kernel-Objekts
 * Ausführen von Prompts mithilfe des Semantic Kernel-SDK
 * Erstellen von Semantic Kernel-Funktionen und Semantic Kernel-Plug-Ins
-* Verwenden des Handlebars-Planers zum Automatisieren von Aufgaben
+* Aktivieren des automatischen Funktionsaufrufs zum Automatisieren von Aufgaben
 
 ## Lab-Einrichtung
 
@@ -105,7 +105,7 @@ In dieser Übung erfahren Sie, wie Sie Ihr erstes Semantic Kernel SDK-Projekt er
 
     `dotnet add package Microsoft.SemanticKernel --version 1.2.0`
 
-1. Fügen Sie der Datei „Program.cs“ den folgenden Code hinzu, um den Kernel zu erstellen:
+1. Um den Kernel zu erstellen, fügen Sie den folgenden Code in Ihre **Program.cs**-Datei ein:
     
     ```c#
     using Microsoft.SemanticKernel;
@@ -202,7 +202,7 @@ In dieser Aufgabe erstellen Sie ein Plug-In, mit dem Sie der Liste „Zuletzt wi
 
     In diesem Code erstellen Sie eine Funktion, die den Künstler, Song und Genre als Zeichenfolgen akzeptiert. Zusätzlich zur `Description`-Funktion fügen Sie auch Beschreibungen der Eingabevariablen hinzu. Die Datei „RecentlyPlayed.txt“ enthält eine Liste von Songs im JSON-Format, die der Benutzer zuletzt wiedergegeben hat. Dieser Code liest den vorhandenen Inhalt aus der Datei, analysiert ihn und fügt den neuen Song der Liste hinzu. Danach wird die aktualisierte Liste wieder in die Datei geschrieben.
 
-1. Aktualisieren Sie Ihre Datei „Program.cs“ mit dem folgenden Code:
+1. Aktualisieren Sie die Datei **Program.cs** mit dem folgenden Code:
 
     ```c#
     var kernel = builder.Build();
@@ -221,7 +221,7 @@ In dieser Aufgabe erstellen Sie ein Plug-In, mit dem Sie der Liste „Zuletzt wi
     Console.WriteLine(result);
     ```
 
-    In diesem Code importieren Sie den `MusicLibraryPlugin`-Kernel mithilfe von `ImportPluginFromType`. Anschließend rufen Sie `InvokeAsync` mit dem Plug-In-Namen und dem Funktionsnamen auf, den Sie aufrufen möchten. Sie geben auch den Künstler, Song und Genre als Argumente an.
+    In diesem Code importieren Sie das MusicLibraryPlugin in den Kernel mit ImportPluginFromType. Anschließend rufen Sie InvokeAsync mit dem Namen des Plug-Ins und dem Namen der Funktion auf, die Sie aufrufen möchten. Sie geben auch den Künstler, Song und Genre als Argumente an.
 
 1. Führen Sie den Code aus, indem Sie `dotnet run` in den Terminal eingeben.
 
@@ -254,7 +254,7 @@ In dieser Aufgabe erstellen Sie einen Prompt, der dem Benutzer basierend auf sei
 
     Diese Funktion liest die Liste der verfügbaren Musik aus einer Datei mit dem Namen „MusicLibrary.txt“. Die Datei enthält eine Liste der für den Benutzer verfügbaren Songs im JSON-Format.
 
-1. Aktualisieren Sie die Datei „Program.cs“ mit dem folgenden Code:
+1. Aktualisieren Sie die Datei **Program.cs** mit dem folgenden Code:
 
     ```c#
     var kernel = builder.Build();
@@ -373,9 +373,9 @@ In dieser Aufgabe erstellen Sie ein Plug-In, das Details zu anstehenden Konzerte
     please recommend a relevant concert that is close to their location.
     ```
 
-    Dieser Prompt hilft dem LLM, die Benutzereingaben zu filtern und nur das Ziel aus dem Text abzurufen. Als Nächstes rufen Sie den Planer auf, um einen Plan zu erstellen, der die Plug-Ins kombiniert, um das Ziel zu erreichen.
+    Dieser Prompt hilft dem LLM, die Benutzereingaben zu filtern und nur das Ziel aus dem Text abzurufen. Als Nächstes testen Sie Ihre Plug-Ins, um die Ausgabe zu überprüfen.
 
-1. Öffnen Sie die Datei „Program.cs“, und aktualisieren Sie sie mit dem folgendem Code:
+1. Öffnen Sie Ihre **Program.cs**-Datei und aktualisieren Sie sie mit dem folgenden Code:
 
     ```c#
     var kernel = builder.Build();    
@@ -408,27 +408,21 @@ In dieser Aufgabe erstellen Sie ein Plug-In, das Details zu anstehenden Konzerte
 
     Versuchen Sie, Ihren Prompt und Ihren Standort zu optimieren, um zu sehen, welche anderen Ergebnisse Sie generieren können.
 
-## Übung 3: Automatisieren von Vorschlägen mit dem Handlebars-Plan
+## Übung 3: Automatisieren von Vorschlägen basierend auf Benutzereingaben
 
-Der Handlebars-Planer ist hilfreich, wenn mehrere Schritte zum Ausführen einer Aufgabe erforderlich sind. Planer verwenden KI, um die im Kernel registrierten Plug-Ins auszuwählen und diese zum Erreichen eines Ziels in einer Reihe von Schritten zu kombinieren. In dieser Übung generieren Sie eine Planvorlage mit dem Handlebars-Planer und verwenden diese zum Automatisieren von Vorschlägen.
+Sie können das manuelle Aufrufen der Plug-In-Funktionen vermeiden, indem Sie stattdessen automatische Funktionsaufrufe verwenden. Das LLM wählt automatisch die im Kernel registrierten Plug-Ins aus und kombiniert sie, um das Ziel zu erreichen. In dieser Übung aktivieren Sie automatische Funktionsaufrufe, um Empfehlungen zu automatisieren.
 
 **Geschätzte Bearbeitungsdauer für die Übung**: 10 Minuten
 
-### Aufgabe 1: Erstellen einer Planvorlage
+### Aufgabe 1: Automatisieren von Vorschlägen basierend auf Benutzereingaben
 
-In dieser Aufgabe generieren Sie mithilfe des Handlebars-Planers eine Planvorlage. Die Planvorlage wird verwendet, um Vorschläge basierend auf der Eingabe des Benutzers zu automatisieren.
+In dieser Aufgabe aktivieren Sie automatische Funktionsaufrufe, um Vorschläge basierend auf der Eingabe der Benutzenden zu generieren.
 
-1. Installieren Sie den Handlebars-Planer, indem Sie Folgendes im Terminal eingeben:
-
-    `dotnet add package Microsoft.SemanticKernel.Planners.Handlebars --version 1.2.0-preview`
-
-    Als Nächstes ersetzen Sie den SuggestConcert-Prompt und verwenden stattdessen den Handlebars-Planer, um die Aufgabe auszuführen.
-
-1. Aktualisieren Sie Ihren Code in der Datei „Program.cs“ wie folgt:
+1. Aktualisieren Sie Ihren Code in der **Program.cs**-Datei wie folgt:
 
     ```c#
     using Microsoft.SemanticKernel;
-    using Microsoft.SemanticKernel.Planning.Handlebars;
+    using Microsoft.SemanticKernel.Connectors.OpenAI;
     
     var builder = Kernel.CreateBuilder();
     builder.AddAzureOpenAIChatCompletion(
@@ -441,20 +435,17 @@ In dieser Aufgabe generieren Sie mithilfe des Handlebars-Planers eine Planvorlag
     kernel.ImportPluginFromType<MusicConcertsPlugin>();
     kernel.ImportPluginFromPromptDirectory("Prompts");
 
-    #pragma warning disable SKEXP0060
-    var planner = new HandlebarsPlanner(new HandlebarsPlannerOptions() { AllowLoops = true });
-
-    string location = "Redmond WA USA";
-    string goal = @$"Based on the user's recently played music, suggest a 
+    OpenAIPromptExecutionSettings settings = new()
+    {
+        ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+    };
+    
+    string prompt = @$"Based on the user's recently played music, suggest a 
         concert for the user living in ${location}";
 
-    var plan = await planner.CreatePlanAsync(kernel, goal);
-    var result = await plan.InvokeAsync(kernel);
-
-    Console.WriteLine($"{result}");
+    var autoInvokeResult = await kernel.InvokePromptAsync(prompt, new(settings));
+    Console.WriteLine(autoInvokeResult);
     ```
-
-    >[!NOTE] Da sich das Handlebars-Paket derzeit in der Vorschau befindet, müssen Sie möglicherweise die Compilerwarnung unterdrücken, um den Code auszuführen.
 
 1. Geben Sie im Terminal `dotnet run` ein.
 
@@ -464,130 +455,15 @@ In dieser Aufgabe generieren Sie mithilfe des Handlebars-Planers eine Planvorlag
     Based on the user's recently played songs, the artist "Mademoiselle" has an upcoming concert in Seattle WA, USA on February 22, 2024, which is close to Redmond WA. Therefore, the recommended concert for the user would be Mademoiselle's concert in Seattle.
     ```
 
-    Daraufhin ändern Sie den Code so, dass er die Handlebars-Planvorlage ausgibt.
+    Der semantische Kernel kann die `SuggestConcert`-Funktion automatisch mit den richtigen Parametern aufrufen. Jetzt ist Ihr Agent in der Lage, Benutzenden ein Konzert vorzuschlagen, das auf der Liste der zuletzt gespielten Musik und ihrem Standort basiert. Als Nächstes können Sie Unterstützung für Musikempfehlungen hinzufügen.
 
-1. Aktualisieren Sie Ihren Code in der Datei „Program.cs“ wie folgt:
-
-    ```c#
-    var plan = await planner.CreatePlanAsync(kernel, goal);
-    Console.WriteLine("Plan:");
-    Console.WriteLine(plan);
-    ```
-
-    Jetzt können Sie den generierten Plan anzeigen. Ändern Sie im Anschluss den Plan so, dass dieser Songvorschläge einschließt oder der Liste „Zuletzt wiedergeben“ des Benutzers einen Song hinzuzufügen.
-
-1. Erweitern Sie Ihren Code mit dem folgenden Codeschnipsel:
+1. Ändern Sie die **Program.cs**-Datei mit dem folgenden Code:
 
     ```c#
-    var plan = await planner.CreatePlanAsync(kernel, 
-        @$"If add song:
-        Add a song to the user's recently played list.
-        
-        If concert recommendation:
-        Based on the user's recently played music, suggest a concert for 
-        the user living in a given location.
-
-        If song recommendation:
-        Suggest a song from the music library to the user based on their 
-        recently played songs.");
-
-    Console.WriteLine("Plan:");
-    Console.WriteLine(plan);
-    ```
-
-1. Geben Sie `dotnet run` das Terminal ein, um die Ausgabe der erstellten Pläne anzuzeigen.
-
-    Sie sollten eine Vorlage ähnlich der folgenden Ausgabe sehen:
-
-    ```output
-    Plan:
-    {{!-- Step 1: Identify Key Values --}}
-    {{set "location" location}}
-    {{set "addSong" addSong}}
-    {{set "concertRecommendation" concertRecommendation}}
-    {{set "songRecommendation" concertRecommendation}}
-
-    {{!-- Step 2: Use the Right Helpers --}}
-    {{#if addSong}}
-        {{set "song" song}}
-        {{set "artist" artist}}
-        {{set "genre" genre}}
-        {{set "songAdded" (MusicLibraryPlugin-AddToRecentlyPlayed artist=artist song=song genre=genre)}}  
-        {{json songAdded}}
-    {{/if}}
-
-    {{#if concertRecommendation}}
-        {{set "concertSuggested" (Prompts-SuggestConcert location=location recentlyPlayedSongs=recentlyPlayedSongs musicLibrary=musicLibrary)}}
-        {{json concertSuggested}}
-    {{/if}}
-
-    {{#if songRecommendation}}
-        {{set "songSuggested" (SuggestSongPlugin-SuggestSong recentlyPlayedSongs=recentlyPlayedSongs musicLibrary=musicLibrary)}}
-        {{json songSuggested}}
-    {{/if}}
-
-    {{!-- Step 3: Output the Result --}}
-    {{json "Goal achieved"}}
-    ```
-
-     Beachten Sie die Syntax `{{#if ...}}`. Diese Syntax fungiert als bedingte Anweisung, die der Handlebars-Planer verwenden kann, ähnlich wie ein traditioneller `if`-`else`-Block in C#. Die `if`-Anweisung muss mit `{{/if}}` abgeschlossen werden.
-
-    Als Nächstes verwenden Sie diese generierte Vorlage, um Ihren eigenen Handlebars-Plan zu erstellen. 
-
-1. Erstellen Sie im Verzeichnis „Files“ eine neue Datei namens „HandlebarsTemplate.txt“ mit dem folgenden Text:
-
-    ```output
-    {{set "addSong" addSong}}
-    {{set "concertRecommendation" concertRecommendation}}
-    {{set "songRecommendation" songRecommendation}}
-
-    {{#if addSong}}
-        {{set "song" song}}
-        {{set "artist" artist}}
-        {{set "genre" genre}}
-        {{set addedSong (MusicLibraryPlugin-AddToRecentlyPlayed artist song genre)}}  
-        Output The following content, do not make any modifications:
-        {{json addedSong}}     
-    {{/if}}
-
-    {{#if concertRecommendation}}
-        {{set "location" location}}
-        {{set "concert" (Prompts-SuggestConcert location)}}
-        Output The following content, do not make any modifications:
-        {{json concert}}
-    {{/if}}
-
-    {{#if songRecommendation}}
-        {{set "recentlyPlayedSongs" (MusicLibraryPlugin-GetRecentPlays)}}
-        {{set "musicLibrary" (MusicLibraryPlugin-GetMusicLibrary)}}
-        {{set "song" (SuggestSongPlugin-SuggestSong recentlyPlayedSongs musicLibrary)}}
-        Output The following content, do not make any modifications:
-        {{json song}}
-    {{/if}}
-    ```
-
-    In dieser Vorlage fügen Sie eine Anweisung hinzu, die dem LLM mitteilt, dass es keine Textgenerierung ausführen soll, damit die Ausgabe ausschließlich durch die Plug-Ins verwaltet wird. Probieren Sie nun die Vorlage aus.
-
-### Aufgabe 2: Verwenden des Handlebars-Planers zum Automatisieren von Vorschlägen
-
-In dieser Aufgabe erstellen Sie aus der Handlebars-Planvorlage eine Funktion und verwenden diese, um Vorschläge basierend auf der Eingabe des Benutzers zu automatisieren.
-
-1. Entfernen Sie die Handlebars-Pläne, indem Sie Ihren vorhandenen Code ändern:
-
-    ```c#
-    using Microsoft.SemanticKernel;
-    using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
-
-    var builder = Kernel.CreateBuilder();
-    builder.AddAzureOpenAIChatCompletion(
-        "your-deployment-name",
-        "your-endpoint",
-        "your-api-key",
-        "deployment-model");
-    var kernel = builder.Build();
-    kernel.ImportPluginFromType<MusicLibraryPlugin>();
-    kernel.ImportPluginFromType<MusicConcertsPlugin>();
-    kernel.ImportPluginFromPromptDirectory("Prompts");
+    OpenAIPromptExecutionSettings settings = new()
+    {
+        ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+    };
     
     var songSuggesterFunction = kernel.CreateFunctionFromPrompt(
         promptTemplate: @"Based on the user's recently played music:
@@ -595,59 +471,52 @@ In dieser Aufgabe erstellen Sie aus der Handlebars-Planvorlage eine Funktion und
         recommend a song to the user from the music library:
         {{$musicLibrary}}",
         functionName: "SuggestSong",
-        description: "Suggest a song to the user"
+        description: "Recommend a song from the music library"
     );
 
     kernel.Plugins.AddFromFunctions("SuggestSongPlugin", [songSuggesterFunction]);
+
+    string prompt = "Can you recommend a song from the music library?";
+
+    var autoInvokeResult = await kernel.InvokePromptAsync(prompt, new(settings));
+    Console.WriteLine(autoInvokeResult);
     ```
 
-1. Fügen Sie Code hinzu, der die Vorlagendatei liest und eine Funktion erstellt:
+    In diesem Code erstellen Sie eine KernelFunction aus einer Prompt-Vorlage, die dem LLM mitteilt, wie ein Lied vorschlagen werden soll. Registrieren Sie es anschließend im Kernel und rufen Sie einen Prompt mit aktivierter Einstellung für den automatischen Funktionsaufruf auf. Der Kernel kann die Funktion ausführen und die richtigen Parameter angeben, um den Prompt zu vervollständigen.
+
+1. Geben Sie im Terminal `dotnet run` ein, um Ihren Code auszuführen.
+
+    Die generierte Ausgabe sollte dem Benutzer basierend auf seiner kürzlich wiedergegebenen Musik einen Song empfehlen. Ihre Antwort sieht möglicherweise ähnlich wie die folgende Ausgabe aus:
+    
+    ```
+    Based on your recently played music, I recommend you listen to the song "Luv(sic)". It falls under the genres of hiphop and rap, which aligns with some of your recently played songs. Enjoy!  
+    ```
+
+    Als Nächstes probieren wir einen Prompt aus, um die Liste der zuletzt wiedergegebenen Songs zu aktualisieren.
+
+1. Aktualisieren Sie die Datei **Program.cs** mit dem folgenden Code:
 
     ```c#
-    string template = File.ReadAllText($"Files/HandlebarsTemplate.txt");
+    string prompt = @"Add this song to the recently played songs list:  title: 'Touch', artist: 'Cat's Eye', genre: 'Pop'";
 
-    var handlebarsPromptFunction = kernel.CreateFunctionFromPrompt(
-        new() {
-            Template = template,
-            TemplateFormat = "handlebars"
-        }, new HandlebarsPromptTemplateFactory()
-    );
+    var result = await kernel.InvokePromptAsync(prompt, new(settings));
+
+    Console.WriteLine(result);
     ```
 
-    In diesem Code übergeben Sie ein `Template`-Objekt zusammen mit dem `TemplateFormat`-Objekt an die Kernelmethode `CreateFunctionFromPrompt`. `CreateFunctionFromPrompt` akzeptiert auch einen `IPromptTemplateFactory`-Typ, der dem Kernel mitteilt, wie eine bestimmte Vorlage zu parsen ist. Da Sie eine Handlebars-Vorlage verwenden, verwenden Sie den `HandlebarsPromptTemplateFactory`-Typ.
+1. Geben Sie im Terminal `dotnet run` ein.
 
-    Als Nächstes führen wir die Funktion mit einigen Argumenten aus und sehen uns die Ergebnisse an!
+    Die Ausgabe sollte ähnlich der Folgenden aussehen:
 
-1. Fügen Sie Ihrer Datei `Program.cs` den folgenden Code hinzu:
-
-    ```c#
-    string location = "Redmond WA USA";
-    var templateResult = await kernel.InvokeAsync(handlebarsPromptFunction,
-        new() {
-            { "location", location },
-            { "concertRecommendation", true },
-            { "songRecommendation", false },
-            { "addSong", false },
-            { "artist", "" },
-            { "song", "" },
-            { "genre", "" }
-        });
-
-    Console.WriteLine(templateResult);
+    ```
+    I have added the song 'Touch' by Cat's Eye to the recently played songs list.
     ```
 
-1. Geben Sie `dotnet run` in das Terminal ein, um die Ausgabe Ihrer Planer-Vorlage anzuzeigen.
+    Wenn Sie die Datei „recentlyplayed.txt“ öffnen, sollte der neue Song am Anfang der Liste hinzugefügt worden sein.
+    
 
-    Die Antwort sollte in etwa wie die folgende Ausgabe aussehen:
-
-    ```output
-    Based on the user's recently played songs, Ly Hoa seems to be a relevant artist. The closest concert to Redmond WA, USA would be in Portland OR, USA on April 16th, 2024.  
-    ```
-
-    Der Prompt konnte dem Benutzer basierend auf der Liste der zuletzt wiedergegebenen Musik und seines Standorts ein Konzert vorschlagen. Zu Testzwecken können Sie andere Variablen ebenfalls auf TRUE festlegen.
-
-Ihr Code kann nun verschiedene Aktionen basierend auf der Eingabe des Benutzers ausführen. Gut gemacht!
+Mithilfe der Einstellung `AutoInvokeKernelFunctions` können Sie sich auf das Erstellen von Plug-Ins konzentrieren, um Benutzeranforderungen zu erfüllen. Ihr Agent ist nun in der Lage, auf der Grundlage der Benutzereingaben automatisch verschiedene Aktionen durchzuführen. Gut gemacht!
 
 ### Überprüfung
 
-In diesem Lab haben Sie einen KI-Agent erstellt, der die Musikbibliothek des Benutzers verwalten und personalisierte Song- und Konzertempfehlungen geben kann. Sie haben das Semantic Kernel-SDK verwendet, um den KI-Agent zu erstellen und mit dem LLM-Dienst (Large Language Model, großes Sprachmodell) zu verbinden. Sie haben benutzerdefinierte Plug-Ins für Ihre Musikbibliothek erstellt, den Handlebars-Planer zum Automatisieren von Vorschlägen verwendet und eine Funktion aus der Handlebars-Planvorlage erstellt, um Vorschläge basierend auf der Eingabe des Benutzers zu automatisieren. Herzlichen Glückwunsch zum erfolgreichen Abschluss dieses Labs.
+In diesem Lab haben Sie einen KI-Agent erstellt, der die Musikbibliothek des Benutzers verwalten und personalisierte Song- und Konzertempfehlungen geben kann. Sie haben das Semantic Kernel-SDK verwendet, um den KI-Agent zu erstellen und mit dem LLM-Dienst (Large Language Model, großes Sprachmodell) zu verbinden. Sie haben benutzerdefinierte Plug-Ins für Ihre Musikbibliothek erstellt und automatische Funktionsaufrufe aktiviert, damit Ihr Agent dynamisch auf die Eingabe der Benutzenden reagiert. Herzlichen Glückwunsch, Sie haben dieses Lab erfolgreich abgeschlossen!

@@ -186,6 +186,8 @@ In dieser Aufgabe erstellen Sie eine native Funktion, die einen Betrag aus einer
 
     In diesem Code verwenden Sie die **ImportPluginFromType**-Methode, um Ihr Plug-In zu importieren. Anschließend verwenden Sie die **InvokeAsync**-Methode, um Ihre Plug-In-Funktion aufzurufen. Die **InvokeAsync**-Methode verwendet den Plug-In-Namen, den Funktionsnamen und ein Wörterbuch mit Parametern. Schließlich drucken Sie das Ergebnis in der Konsole. Führen Sie als Nächstes den Code aus, um sicherzustellen, dass er funktioniert.
 
+1. Öffnen Sie das Terminal, indem Sie „Terminal > Neues Terminal“ auswählen.
+
 1. Geben Sie im Terminal `dotnet run` ein. Die folgende Ausgabe wird angezeigt.
 
     ```output
