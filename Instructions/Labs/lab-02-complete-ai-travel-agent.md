@@ -4,14 +4,14 @@ lab:
   module: 'Module 01: Build your kernel'
 ---
 
-# Lab: Fertigstellen eines KI-Reisebüros
-# Lab-Handbuch für Kursteilnehmer
+# Lab: Fertigstellen eines KI-Reiseassistenten
+# Lab-Handbuch für Kursteilnehmende
 
-In dieser Übung stellen Sie ein KI-Reisebüro mit dem Semantic Kernel-SDK fertig. Sie erstellen einen Endpunkt für den LLM-Dienst (Large Language Model), erstellen Semantic Kernel-Funktionen und verwenden die Funktion für automatische Funktionsaufrufe des Semantic Kernel-SDK, um die Absicht des Benutzers bzw. der Benutzerin an die entsprechenden Plug-Ins weiterzuleiten, zu denen einige vorgefertigter Plug-Ins, die bereitgestellt wurden, gehören. Sie stellen dem LLM auch Kontext bereit, indem Sie den Unterhaltungsverlauf verwenden und den Benutzern und Benutzerinnen erlauben, die Unterhaltung fortzusetzen.
+In dieser Übung werden Sie einen KI-Reiseassistenten mithilfe des semantischen Kernell-SDK erstellen. Sie erstellen einen Endpunkt für den LLM-Dienst (Large Language Model), erstellen Semantic Kernel-Funktionen und verwenden die Funktion für automatische Funktionsaufrufe des Semantic Kernel-SDK, um die Absicht des Benutzers bzw. der Benutzerin an die entsprechenden Plug-Ins weiterzuleiten, zu denen einige vorgefertigter Plug-Ins, die bereitgestellt wurden, gehören. Sie stellen dem LLM auch Kontext bereit, indem Sie den Unterhaltungsverlauf verwenden und den Benutzern und Benutzerinnen erlauben, die Unterhaltung fortzusetzen.
 
 ## Übungsszenario
 
-Sie sind bei einem Reisebüro, das sich auf die Erstellung personalisierter Reiseerlebnisse für der Kunden spezialisiert hat, Fachkraft in der Entwicklung. Sie wurden beauftragt, ein KI-Reisebüro zu erstellen, das Kunden dabei helfen kann, mehr über Reiseziele zu erfahren und Aktivitäten für ihre Reisen zu planen. Der KI-Reisebüro sollte in der Lage sein, Währungsbeträge umzurechnen, Reiseziele und Aktivitäten vorzuschlagen, hilfreiche Ausdrücke in verschiedenen Sprachen bereitzustellen und Sätze zu übersetzen. Der KI-Reisebüro sollte auch anhand des Unterhaltungsverlaufs kontextbezogene Antworten auf die Anfragen des Benutzers oder der Benutzerin geben können.
+Sie sind bei einem Reisebüro, das sich auf die Erstellung personalisierter Reiseerlebnisse für der Kunden spezialisiert hat, Fachkraft in der Entwicklung. Sie wurden mit der Entwicklung eines KI-Reiseassistenten beauftragt, der der Kundschaft dabei helfen soll, mehr über Reiseziele zu erfahren und Aktivitäten für ihre Reisen zu planen. Der KI-Reiseassistent sollte in der Lage sein, Währungsbeträge umzurechnen, Reiseziele und Aktivitäten vorzuschlagen, hilfreiche Redewendungen in verschiedenen Sprachen bereitzustellen und Redewendungen zu übersetzen. Der KI-Reiseassistent sollte auch in der Lage sein, kontextbezogene Antworten auf die Anfragen der Benutzenden zu geben, indem er die aufgezeichneten Unterhaltungen verwendet.
 
 ## Ziele
 
@@ -92,7 +92,7 @@ Für diese Übung erstellen Sie einen Endpunkt für den LLM-Dienst (Large Langua
 
 ### Aufgabe 2: Erstellen eines nativen Plug-Ins
 
-In dieser Aufgabe erstellen Sie ein natives Funktios-Plug-In, das einen Betrag aus einer Basiswährung in eine Zielwährung umrechnen kann.
+Bei dieser Aufgabe erstellen Sie ein natives Funktions-Plug-In, das einen Betrag von einer Basiswährung in eine Zielwährung umrechnen kann.
 
 1. Kehren Sie zu Ihrem Visual Studio Code-Projekt zurück.
 
@@ -106,29 +106,30 @@ In dieser Aufgabe erstellen Sie ein natives Funktios-Plug-In, das einen Betrag a
     }
     ```
 
-1. Navigieren Sie zu einer neuen Datei namens **CurrencyConverter.cs** im Ordner **Plugins/ConvertCurrency**
+1. Navigieren Sie zu einer Datei namens **CurrencyConverterPlugin.cs** im Ordner **Plugins**.
 
-1. Fügen Sie in der Datei **CurrencyConverter.cs** den folgenden Code hinzu, um eine Plug-In-Funktion zu erstellen:
+1. Fügen Sie in der Datei **CurrencyConverterPlugin.cs** den folgenden Code unter dem Kommentar **Create a kernel function that gets the exchange rate**:
 
     ```c#
-    class CurrencyConverter
+    // Create a kernel function that gets the exchange rate
+    [KernelFunction("convert_currency")]
+    [Description("Converts an amount from one currency to another, for example USD to EUR")]
+    public static decimal ConvertCurrency(decimal amount, string fromCurrency, string toCurrency)
     {
-        [KernelFunction("convert_currency")]
-        [Description("Converts an amount from one currency to another, for example USD to EUR")]
-        public static decimal ConvertCurrency(decimal amount, string fromCurrency, string toCurrency)
-        {
-            decimal exchangeRate = GetExchangeRate(fromCurrency, toCurrency);
-            return amount * exchangeRate;
-        }
+        decimal exchangeRate = GetExchangeRate(fromCurrency, toCurrency);
+        return amount * exchangeRate;
     }
     ```
 
     In diesem Code verwenden Sie den Decorator **KernelFunction**, um Ihre systemeigene Funktion zu deklarieren. Sie verwenden auch den **Description**-Decorator, um eine Beschreibung der Funktion hinzuzufügen. Als Nächstes fügen Sie eine Logik hinzu, um einen bestimmten Betrag von einer Währung in eine andere zu konvertieren.
 
-1. Importieren Sie in der Datei **Program.cs** ein neues Plugin mit dem folgenden Code:
+1. Öffnen Sie die Datei **Program.cs**.
+
+1. Importieren Sie das Plug-In für den Währungsrechner unter dem Kommentar **Add plugins to the kernel**:
 
     ```c#
-    kernel.ImportPluginFromType<CurrencyConverter>();
+    // Add plugins to the kernel
+    kernel.ImportPluginFromType<CurrencyConverterPlugin>();
     ```
 
     Als Nächstes testen wir Ihr Plug-In.
@@ -147,7 +148,7 @@ In dieser Aufgabe erstellen Sie ein natives Funktios-Plug-In, das einen Betrag a
 
 ## Übung 2: Erstellen einer Handlebars-Eingabeaufforderung
 
-In dieser Übung erstellen Sie eine Funktion aus einer Handlebars-Eingabeaufforderung. Die Funktion fordert die LLM auf, einen Reiseplan für den Benutzenden zu erstellen. Legen wir los.
+In dieser Übung erstellen Sie eine Funktion aus einer Handlebars-Eingabeaufforderung. Die Funktion fordert das LLM auf, einen Reiseplan für die Benutzenden zu erstellen. Legen wir los.
 
 **Geschätzte Bearbeitungsdauer für die Übung**: 10 Minuten
 
@@ -157,23 +158,22 @@ In dieser Übung erstellen Sie eine Funktion aus einer Handlebars-Eingabeaufford
 
     `using Microsoft.SemanticKernel.PromptTemplates.Handlebars;`
 
-1. Aktualisieren Sie die Datei **Program.cs** mit dem folgenden Code:
+1. Fügen Sie den folgenden Code unter dem Kommentar **Create a handlebars prompt** hinzu:
 
     ```c#
-    kernel.ImportPluginFromType<CurrencyConverterPlugin>();
-
+    // Create a handlebars prompt
     string hbprompt = """
-        <message role="system">Instructions: Before providing the the user with a travel itenerary, ask how many days their trip is</message>
-        <message role="user">I'm going to {{city}}. Can you create an itenerary for me?</message>
+        <message role="system">Instructions: Before providing the user with a travel itinerary, ask how many days their trip is</message>
+        <message role="user">I'm going to {{city}}. Can you create an itinerary for me?</message>
         <message role="assistant">Sure, how many days is your trip?</message>
         <message role="user">{{input}}</message>
         <message role="assistant">
         """;
     ```
 
-    In diesem Code erstellen Sie mithilfe des Handlebars-Vorlagenformats eine Few-Shot-Eingabeaufforderung. Die Eingabeaufforderung leitet das Modell dazu an, weiterer Informationen vom Benutzenden abzurufen, bevor ein Reiseplan erstellt wird.
+    In diesem Code erstellen Sie mithilfe des Handlebars-Vorlagenformats eine Few-Shot-Eingabeaufforderung. Der Prompt wird das Modell dazu anleiten, weitere Informationen von den Benutzenden einzuholen, bevor ein Reiseplan erstellt wird.
 
-1. Fügen Sie den folgenden Code in Ihre Datei **Program.cs** ein:
+1. Fügen Sie den folgenden Code unter dem Kommentar **Create the prompt template config using handlebars format** hinzu:
 
     ```c#
     // Create the prompt template config using handlebars format
@@ -182,26 +182,30 @@ In dieser Übung erstellen Sie eine Funktion aus einer Handlebars-Eingabeaufford
     {
         Template = hbprompt,
         TemplateFormat = "handlebars",
-        Name = "GetItenerary",
+        Name = "GetItinerary",
     };
-
-    // Create a plugin from the prompt
-    var promptFunction = kernel.CreateFunctionFromPrompt(promptTemplateConfig, templateFactory);
-    var iteneraryPlugin = kernel.CreatePluginFromFunctions("TravelItenerary", [promptFunction]);
-
-    // Add the new plugin to the kernel
-    kernel.Plugins.Add(iteneraryPlugin);
     ```
 
-    In diesem Code erstellen Sie eine Handlebars-Vorlagenkonfiguration aus der Eingabeaufforderung. Anschließend erstellen Sie eine Plug-In-Funktion für die Eingabeaufforderung und fügen sie dem Kernel hinzu. Nun können Sie Ihre Funktion aufrufen.
+    Dieser Code erstellt eine Konfiguration der Handlebars-Vorlage aus dem Prompt. Sie können ihn verwenden, um eine Plug-In-Funktion zu erstellen.
+
+1. Fügen Sie den folgenden Code unter dem Kommentar **Create a plugin function from the prompt** hinzu: 
+
+    ```c#
+    // Create a plugin function from the prompt
+    var promptFunction = kernel.CreateFunctionFromPrompt(promptTemplateConfig, templateFactory);
+    var itineraryPlugin = kernel.CreatePluginFromFunctions("TravelItinerary", [promptFunction]);
+    kernel.Plugins.Add(itineraryPlugin);
+    ```
+
+    Dieser Code erstellt eine Plug-In-Funktion für den Prompt und fügt sie dem Kernel hinzu. Nun können Sie Ihre Funktion aufrufen.
 
 1. Geben Sie `dotnet run` in das Terminal ein, um den Code auszuführen.
 
-    Versuchen Sie die folgende Eingabe, um die LLM zur Erstellung eines Reisplans aufzufordern.
+    Versuchen Sie es mit der folgenden Eingabe, um das LLM nach einer Reiseroute zu fragen.
 
     ```output
     Assistant: How may I help you?
-    User: I'm going to Hong Kong, can you create an itenerary for me?
+    User: I'm going to Hong Kong, can you create an itinerary for me?
     Assistant: Sure! How many days will you be staying in Hong Kong?
     User: 10
     Assistant: Great! Here's a 10-day itinerary for your trip to Hong Kong:
@@ -210,20 +214,20 @@ In dieser Übung erstellen Sie eine Funktion aus einer Handlebars-Eingabeaufford
 
     Jetzt haben Sie die Anfänge eines KI-Reiseassistenten erstellt. Verwenden wir Eingabeaufforderungen und Plug-Ins, um weitere Features hinzuzufügen
 
-1.  Fügen Sie den folgenden Code in Ihre Datei **Program.cs** ein:
+1.  Fügen Sie das Flugbuchungs-Plug-In unter dem Kommentar **Add plugins to the kernel** hinzu:
 
     ```c#
+    // Add plugins to the kernel
     kernel.ImportPluginFromType<CurrencyConverterPlugin>();
     kernel.ImportPluginFromType<FlightBookingPlugin>();
     ```
 
     Dieses Plug-In simuliert Flugbuchungen mithilfe der **flights.json**-Datei mit simulierten Details. Fügen Sie dem Assistenten als Nächstes weitere Systemaufforderungen hinzu.
 
-1.  Fügen Sie den folgenden Code in Ihre Datei **Program.cs** ein:
+1.  Fügen Sie den folgenden Code unter dem Kommentar **Add system messages to the chat** hinzu:
 
     ```c#
-    // Setup the assistant chat
-    var history = new ChatHistory();
+    // Add system messages to the chat
     history.AddSystemMessage("The current date is 01/10/2025");
     history.AddSystemMessage("You are a helpful travel assistant.");
     history.AddSystemMessage("Before providing destination recommendations, ask the user about their budget.");
@@ -237,7 +241,7 @@ In dieser Übung erstellen Sie eine Funktion aus einer Handlebars-Eingabeaufford
 
     ```output
     1. Can you give me some destination recommendations for Europe?
-    2. I want to go to Barcelona, can you create an itenerary for me?
+    2. I want to go to Barcelona, can you create an itinerary for me?
     3. How many Euros is 100 USD?
     4. Can you book me a flight to Barcelona?
     ```
@@ -246,7 +250,7 @@ In dieser Übung erstellen Sie eine Funktion aus einer Handlebars-Eingabeaufford
 
 ## Übung 3: Einholen der Zustimmung des Benutzenden für Aktionen
 
-In dieser Übung fügen Sie eine Filteraufruffunktion hinzu, die die Genehmigung der Benutzenden anfordert, bevor der Agent einen Flug in deren Namen buchen kann. Legen wir los.
+In dieser Übung fügen Sie eine Filteraufruffunktion hinzu, die die Zustimmung der Benutzenden einholt, bevor der Assistent einen Flug in ihrem Namen buchen darf. Legen wir los.
 
 ### Aufgabe 1: Erstellen eines Funktionsaufruffilters
 
@@ -262,7 +266,9 @@ In dieser Übung fügen Sie eine Filteraufruffunktion hinzu, die die Genehmigung
     {
         public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, Func<FunctionInvocationContext, Task> next)
         {
+            // Check the plugin and function names
             
+            await next(context);
         }
     }
     ```
@@ -270,17 +276,18 @@ In dieser Übung fügen Sie eine Filteraufruffunktion hinzu, die die Genehmigung
     >[!NOTE] 
     > In Version 1.30.0 des semantischen Kernel-SDK können Funktionsfilter geändert werden und erfordern eine Unterdrückung von Warnungen. 
 
-    In diesem Code implementieren Sie die `IFunctionInvocationFilter`-Schnittstelle. Die `OnFunctionInvocationAsync`-Methode wird immer aufgerufen, wenn eine Funktion von einem KI-Agenten aufgerufen wird.
+    In diesem Code implementieren Sie die `IFunctionInvocationFilter`-Schnittstelle. Die `OnFunctionInvocationAsync`-Methode wird immer aufgerufen, wenn eine Funktion von einem KI-Assistenten aufgerufen wird.
 
 1. Fügen Sie den folgenden Code hinzu, um zu erkennen, wann die `book_flight`-Funktion aufgerufen wird:
 
     ```c#
-    if ((context.Function.PluginName == "FlightBooking" && context.Function.Name == "book_flight"))
+    // Check the plugin and function names
+    if ((context.Function.PluginName == "FlightBookingPlugin" && context.Function.Name == "book_flight"))
     {
-    
-    }
+        // Request user approval
 
-    await next(context);
+        // Proceed if approved
+    }
     ```
 
     Dieser Code bestimmt anhand des `FunctionInvocationContext` Codes, welches Plug-In und welche Funktion aufgerufen wurden.
@@ -288,29 +295,25 @@ In dieser Übung fügen Sie eine Filteraufruffunktion hinzu, die die Genehmigung
 1. Fügen Sie die folgende Logik hinzu, um die Berechtigung des Benutzenden zum Buchen des Flugs anzufordern:
 
     ```c#
-    if ((context.Function.PluginName == "FlightBooking" && context.Function.Name == "book_flight"))
+    // Request user approval
+    Console.WriteLine("System Message: The assistant requires an approval to complete this operation. Do you approve (Y/N)");
+    Console.Write("User: ");
+    string shouldProceed = Console.ReadLine()!;
+
+    // Proceed if approved
+    if (shouldProceed != "Y")
     {
-        Console.WriteLine("System Message: The agent requires an approval to complete this operation. Do you approve (Y/N)");
-        Console.Write("User: ");
-        string shouldProceed = Console.ReadLine()!;
-
-        if (shouldProceed != "Y")
-        {
-            context.Result = new FunctionResult(context.Result, "The operation was not approved by the user");
-            return;
-        }
+        context.Result = new FunctionResult(context.Result, "The operation was not approved by the user");
+        return;
     }
-
-    await next(context);
     ```
 
 1. Navigieren Sie zur Datei **Program.cs**.
 
-1. Fügen Sie den Berechtigungsfilter mithilfe des folgenden Codes zu Ihrem Kernel hinzu:
+1. Fügen Sie den folgenden Code unter dem Kommentar **Add filters to the kernel** hinzufügen:
 
     ```c#
-    kernel.ImportPluginFromType<CurrencyConverterPlugin>();
-    kernel.ImportPluginFromType<FlightBookingPlugin>();
+    // Add filters to the kernel
     kernel.FunctionInvocationFilters.Add(new PermissionFilter());
     ```
 
@@ -322,13 +325,13 @@ In dieser Übung fügen Sie eine Filteraufruffunktion hinzu, die die Genehmigung
     User: Find me a flight to Tokyo on the 19
     Assistant: I found a flight to Tokyo on the 19th of January. The flight is with Air Japan and the price is $1200.
     User: Y
-    System Message: The agent requires an approval to complete this operation. Do you approve (Y/N)
+    System Message: The assistant requires an approval to complete this operation. Do you approve (Y/N)
     User: N
     Assistant: I'm sorry, but I am unable to book the flight for you.
     ```
 
-    Der Agent sollte die Genehmigung des Benutzenden einholen, bevor er mit Buchungen fortfährt.
+    Der Assistent sollte die Genehmigung der Benutzenden einholen, bevor er mit Buchungen fortfährt.
 
 ### Überprüfung
 
-In diesem Lab haben Sie einen Endpunkt für den LLM (Large Language Model)-Dienst erstellt, ein semantisches Kernelobjekt erstellt und Prompts mithilfe des semantischen Kernel-SDKs ausgeführt. Sie haben auch Plug-Ins erstellt und Systemmeldungen verwendet, um das Modell zu steuern. Herzlichen Glückwunsch, Sie haben dieses Lab erfolgreich abgeschlossen!
+In diesem Lab haben Sie einen Endpunkt für den LLM (Large Language Model)-Dienst erstellt, ein semantisches Kernelobjekt erstellt und Prompts mithilfe des semantischen Kernel-SDKs ausgeführt. Sie haben auch Plug-Ins erstellt und Systemmeldungen genutzt, um das Modell zu steuern. Herzlichen Glückwunsch, Sie haben dieses Lab erfolgreich abgeschlossen!
