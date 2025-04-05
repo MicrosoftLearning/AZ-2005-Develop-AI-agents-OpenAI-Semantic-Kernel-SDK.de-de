@@ -189,7 +189,7 @@ In dieser Aufgabe erstellen Sie ein Plug-In, mit dem Sie der Liste „Zuletzt wi
 
 1. Navigieren Sie zur Datei **Program.cs**.
 
-1. Fügen Sie den folgenden Code unter **Import plugins to the kernel** ein:
+1. Fügen Sie den folgenden Code unter dem Kommentar **Import plugins to the kernel** hinzu:
 
     ```c#
     // Import plugins to the kernel
