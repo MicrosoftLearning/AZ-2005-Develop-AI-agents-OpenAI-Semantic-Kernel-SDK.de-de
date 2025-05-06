@@ -1,35 +1,13 @@
-#README
+# Entwickeln von generativen KI-Lösungen mit Azure OpenAI und dem semantischen Kernel-SDK
 
-We've turned off the ability to report issues directly on this repo and do not monitor PRs.
+Die Übungen in diesem Repository sind so konzipiert, dass Sie praktische Erfahrungen sammeln und sich mit den typischen Aufgaben vertraut machen können, die Fachkräfte in der Entwicklung beim Erstellen generativer KI-Lösungen mit dem semantischen Kernel und Azure OpenAI ausführen.
 
-Provide feedback here: https://aka.ms/provide-feedback
+> **Hinweis**: Um die Übungen durchführen zu können, benötigen Sie ein Azure-Abonnement, das Ihnen ausreichende Berechtigungen und Kontingente für die Bereitstellung der erforderlichen Azure-Ressourcen und generativen KI-Modelle bietet. Wenn Sie noch kein Konto haben, können Sie sich für ein [Azure-Konto](https://azure.microsoft.com/free) anmelden. Für neue Benutzende gibt es dort eine kostenlose Testoption, die Guthaben für die ersten 30 Tage beinhaltet.
 
-Or, if you are a trainer with a microsoft.com email address, please create a ticket in AzDO.
+Sehen Sie sich die Übungen auf der [GitHub Pages-Seite für dieses Repository](https://go.microsoft.com/fwlink/?linkid=2318531) an.
 
-# INF99X: Beispielkurs
+> **Hinweis**: Diese Übungen können zwar eigenständig absolviert werden, sie sind jedoch als Ergänzung zu den Modulen auf [Microsoft Learn](https://learn.microsoft.com/training/paths/develop-ai-agents-azure-open-ai-semantic-kernel-sdk/) gedacht, in denen Sie tiefer in einige der zugrunde liegenden Konzepte eintauchen können, auf denen diese Übungen basieren.
 
-**Sind Sie ein MCT?** – Lesen Sie unser [GitHub-Benutzerhandbuch für MCTs](https://microsoftlearning.github.io/MCT-User-Guide/).
+## Melden von Problemen
 
-## Was tun wir?
-
-- Zur Unterstützung dieses Kurses müssen wir den Kursinhalt regelmäßig aktualisieren, um ihn auf den neuesten Stand der im Kurs verwendeten Microsoft-Dienste zu bringen. Wir veröffentlichen die Labanweisungen und Labdateien auf GitHub, um offene Beiträge zwischen den Kursautor*innen und MCTs (Microsoft Certified Trainer) zu ermöglichen und die Inhalte an aktuelle Produktänderungen anzupassen.
-
-- Wir hoffen, dass sich daraus ein beispielloses Gefühl der Zusammenarbeit in den Labs ergibt. Wenn sich ein Microsoft-Dienst wie Azure oder Microsoft 365 ändert und Ihnen dies bei einem Live-Vortrag auffällt, können Sie direkt im Labcode eine Verbesserung vornehmen. Helfen Sie Ihren MCTs.
-
-## Wie sollte ich dieses Repository verwenden?
-
-- Die Kursleitermaterialien sind Ihre Hauptquelle für die Kursinhalte.
-
-- Diese Dateien auf GitHub sind für die Verwendung in den Kurslabs in der gehosteten Lab-Umgebung vorgesehen.
-
-- Kursleiter*innen sollten GitHub vor jedem Kurs auf Änderungen überprüfen, die möglicherweise zur Unterstützung der neuesten Microsoft Cloud-Dienste vorgenommen wurden, und die neuesten Dateien für den Kurs abrufen.
-
-## Was ist mit Änderungen am Kursteilnehmerhandbuch?
-
-- Wir werden das Kursteilnehmerhandbuch vierteljährlich überprüfen und bei Bedarf über die regulären Veröffentlichungskanäle des MOC (Microsoft Official Curriculum) aktualisieren.
-
-## Wie kann ich beitragen?
-
-- Jeder MCT (Microsoft Certified Trainer) kann einen Pull Request bezüglich des Codes oder des Inhalts im GitHub-Repository senden. Microsoft und die Kursautor*innen werden bei Bedarf Änderungen an Inhalt und am Labcode überprüfen und einarbeiten.
-
-- Sie können Fehler, Änderungen, Verbesserungen und Vorschläge einreichen. Sie haben vor uns eine neue Azure- oder Microsoft 365-Funktion gefunden? Reichen Sie eine neue Demo ein!
+Wenn bei den Übungen Probleme auftreten, melden Sie diese als **Issues** in diesem Repository.
