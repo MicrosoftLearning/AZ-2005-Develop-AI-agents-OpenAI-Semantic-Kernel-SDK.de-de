@@ -1,3 +1,5 @@
+**⚠️ This GitHub repo will retire on 28th November 2025.** 
+
 # Entwickeln von generativen KI-Lösungen mit Azure OpenAI und dem semantischen Kernel-SDK
 
 Die Übungen in diesem Repository sind so konzipiert, dass Sie praktische Erfahrungen sammeln und sich mit den typischen Aufgaben vertraut machen können, die Fachkräfte in der Entwicklung beim Erstellen generativer KI-Lösungen mit dem semantischen Kernel und Azure OpenAI ausführen.
