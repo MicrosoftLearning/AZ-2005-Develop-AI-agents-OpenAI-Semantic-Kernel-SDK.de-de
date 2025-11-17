@@ -14,23 +14,29 @@ Diese Übung dauert ca. **30** Minuten.
 
 1. Navigieren Sie zu [https://portal.azure.com](https://portal.azure.com).
 
-1. Erstellen Sie eine neue Azure OpenAI-Ressource mit den Standardeinstellungen.
+1. Erstellen Sie eine neue **Azure OpenAI**-Ressource mit den Standardeinstellungen.
 
 1. Wählen Sie nach Erstellung der Ressource die Option **Zu Ressource wechseln** aus.
 
 1. Wählen Sie auf der Seite **Übersicht** die Option **Gehe zum Azure Foundry-Portal** aus.
 
-1. Wählen Sie **Neue Bereitstellung erstellen** und dann **aus Basismodell bereitstellen** aus.
+    Azure AI Foundry-Portal sollte auf einer neuen Registerkarte geöffnet werden.
 
-1. Suchen Sie in der Modellliste nach **gpt-4o**, wählen Sie es aus und bestätigen Sie es.
+1. Wählen Sie im linken Navigationsbereich die Option **Bereitstellungen** aus.
 
-1. Geben Sie einen Namen für Ihre Bereitstellung ein, und behalten Sie die Standardoptionen bei.
+1. Wählen Sie **Modell bereitstellen** und dann **Basismodell bereitstellen** aus.
 
-1. Wenn die Bereitstellung abgeschlossen ist, navigieren Sie zurück zu Ihrer Azure OpenAI-Ressource im Azure-Portal.
+1. Suchen Sie in der Modellliste nach **gpt-4o**, und wählen Sie dieses aus. Wählen Sie anschließend **Bestätigen** aus.
 
-1. Wählen Sie unter **Ressourcenverwaltung** die Option **Schlüssel und Endpunkt** aus.
+    Ein Dialogfeld sollte angezeigt werden, mit dem Sie die Bereitstellung für Ihre Azure OpenAI-Ressource konfigurieren können.
 
-    Sie verwenden die hier verwendeten Daten in der nächsten Aufgabe, um Ihren Kernel zu erstellen. Denken Sie daran, Ihre Schlüssel privat und sicher aufzubewahren.
+1. Überprüfen Sie die Einstellungen, und wählen Sie **Bereitstellen** aus.
+
+    Nach Abschluss der Bereitstellung wird die Seite mit den Bereitstellungsdetails angezeigt.
+
+1. Beachten Sie unter **Endpunkt** den **Ziel-URI** und den **Schlüssel**.
+
+    In der nächsten Aufgabe verwenden Sie die hier angezeigten Werte, um Ihren Kernel zu erstellen. Denken Sie daran, Ihre Schlüssel privat und sicher aufzubewahren.
 
 ## Vorbereiten der Anwendungskonfiguration
 
@@ -102,25 +108,27 @@ Diese Übung dauert ca. **30** Minuten.
 
     Die Datei wird in einem Code-Editor geöffnet.
 
-1. Aktualisieren Sie die Werte mit Ihrer Azure OpenAI Dienst-Modell-ID, dem Endpunkt und dem API-Schlüssel.
+1. Aktualisieren Sie die Werte aus Ihrer Azure OpenAI-Modellimplementierung:
 
     **Python**
     ```python
-    MODEL_DEPLOYMENT=""
-    BASE_URL=""
+    MODEL_ENDPOINT=""
     API_KEY="
+    MODEL_DEPLOYMENT_NAME=""
     ```
 
     **C#**
     ```json
     {
-        "modelName": "",
-        "endpoint": "",
-        "apiKey": ""
+        "openai_endpoint": "",
+        "api_key": "",
+        "model_deployment_name": "",
     }
     ```
 
-1. Nachdem Sie die Werte aktualisiert haben, verwenden Sie den Befehl **CTRL+S**, um Ihre Änderungen zu speichern, und verwenden Sie dann den Befehl **CTRL+Q**, um den Code-Editor zu schließen, während die Befehlszeile der Cloud-Shell geöffnet bleibt.
+> **Hinweis:** Verwenden Sie bei C# die Endpunkt-URL von **Azure OpenAI** auf der **Startseite** Ihrer Ressource für den Wert von `openai_endpoint`.
+
+1. Nachdem Sie die Werte aktualisiert haben, verwenden Sie die Tastenkombination **STRG + S**, um Ihre Änderungen zu speichern und anschließend **STRG + Q**, um den Code-Editor zu schließen, während die Befehlszeile der Cloud Shell geöffnet bleibt.
 
 ## Erstellen eines Plugins für den semantischen Kernel
 
@@ -143,9 +151,9 @@ Diese Übung dauert ca. **30** Minuten.
     # Create a kernel builder with Azure OpenAI chat completion
     kernel = Kernel()
     chat_completion = AzureChatCompletion(
-        deployment_name=deployment_name,
+        deployment_name=model_name,
         api_key=api_key,
-        base_url=base_url,
+        base_url=endpoint,
     )
     kernel.add_service(chat_completion)
     ```
@@ -153,11 +161,11 @@ Diese Übung dauert ca. **30** Minuten.
      ```c#
     // Create a kernel builder with Azure OpenAI chat completion
     var builder = Kernel.CreateBuilder();
-    builder.AddAzureOpenAIChatCompletion(modelId, endpoint, apiKey);
+    builder.AddAzureOpenAIChatCompletion(modelName, endpoint, apiKey);
     var kernel = builder.Build();
     ```
 
-1. Finden Sie am Ende der Datei den Kommentar **Create a kernel function to build the stage environment** und fügen Sie den folgenden Code hinzu, um eine Scheinfunktion für das Plugin zu erstellen, das die Staging-Umgebung erstellt:
+1. Suchen Sie in der Klasse **DevopsPlugin** am unteren Rand der Datei den Kommentar **Create a kernel function to build the stage environment** (Kernel erstellen, um die Stagingumgebung zu erstellen), und fügen Sie den folgenden Code hinzu, um eine Plug-In-Modellfunktion zu erstellen, die die Stagingumgebung erstellt:
 
     **Python**
     ```python
@@ -179,7 +187,7 @@ Diese Übung dauert ca. **30** Minuten.
 
     Der `KernelFunction`-Decorator deklariert Ihre systemeigene Funktion. Sie verwenden einen beschreibenden Namen für die Funktion, damit die KI sie richtig aufrufen kann. 
 
-1. Navigieren Sie zu dem Kommentar **Import plugins to the kernel** und fügen Sie den folgenden Code hinzu:
+1. Navigieren Sie in der Methode **main** zum Kommentar, **Import plugins to the kernel** (Plug-Ins in den Kernel importieren), und fügen Sie den folgenden Code hinzu, um die abgeschlossene Plug-In-Klasse zu verwenden:
 
     **Python**
     ```python
@@ -192,7 +200,6 @@ Diese Übung dauert ca. **30** Minuten.
     // Import plugins to the kernel
     kernel.ImportPluginFromType<DevopsPlugin>();
     ```
-
 
 1. Fügen Sie unter dem Kommentar **Create prompt execution settings** den folgenden Code hinzu, um die Funktion automatisch aufzurufen:
 
@@ -229,13 +236,13 @@ Diese Übung dauert ca. **30** Minuten.
     ChatHistory chatHistory = [];
     ```
 
-1. Dekommentieren Sie den Codeblock am Standort nach dem Kommentar **User interaction logic**
+1. Entfernen Sie die Auskommentierung des Codeblocks nach dem Kommentar **User interaction logic**
 
 1. Verwenden Sie den Befehl **STRG+S**, um Ihre Änderungen in der Codedatei zu speichern.
 
-## Führen Sie den Code Ihres Devops-Assistenten aus
+## Ausführen des DevOps-Assistentencodes
 
-1. Geben Sie im Befehlszeilenbereich der Cloud-Shell den folgenden Befehl ein, um sich bei Azure anzumelden.
+1. Geben Sie im Befehlszeilenbereich von Cloud Shell den folgenden Befehl ein, um sich bei der App anzumelden:
 
     ```
     az login
@@ -243,11 +250,11 @@ Diese Übung dauert ca. **30** Minuten.
 
     **<font color="red">Sie müssen sich bei Azure anmelden - auch wenn die Cloud-Shell-Sitzung bereits authentifiziert ist.</font>**
 
-    > **Hinweis**: In den meisten Fällen ist es ausreichend, *az Anmeldung* zu verwenden. Wenn Sie jedoch Abonnements in mehreren Mandanten haben, müssen Sie möglicherweise den Mandanten mithilfe des Parameters *--tenant* angeben. Siehe [Interaktiv bei Azure anmelden mithilfe der Azure CLI](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively) für Details.
+    > **Hinweis**: In den meisten Szenarien ist nur die Verwendung von *az login* ausreichend. Wenn Sie jedoch Abonnements in mehreren Mandqanten haben, müssen Sie möglicherweise den Mandanten mit dem Parameter *--tenant* angeben. Weitere Informationen finden Sie unter [Interaktive Anmeldung bei Azure mit der Azure CLI](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively).
 
-1. Wenn Sie dazu aufgefordert werden, folgen Sie den Anweisungen, um die Anmeldeseite in einer neuen Registerkarte zu öffnen, und geben Sie den bereitgestellten Authentifizierungscode und Ihre Anmeldeinformationen für Azure ein. Schließen Sie dann den Anmeldevorgang in der Befehlszeile ab und wählen Sie das Abonnement aus, das Ihren Azure AI Foundry-Hub enthält, wenn Sie dazu aufgefordert werden.
+1. Wenn Sie dazu aufgefordert werden, folgen Sie den Anweisungen, um die Anmeldeseite in einer neuen Registerkarte zu öffnen, und geben Sie den angegebenen Authentifizierungscode und Ihre Azure-Anmeldeinformationen ein. Schließen Sie dann den Anmeldevorgang in der Befehlszeile ab, und wählen Sie das Abonnement aus, das Ihren Azure AI Foundry Hub enthält, wenn Sie dazu aufgefordert werden.
 
-1. Nachdem Sie sich angemeldet haben, geben Sie den folgenden Befehl ein, um die Anwendung zu starten:
+1. Geben Sie nach der Anmeldung den folgenden Befehl ein, um die Anwendung auszuführen:
 
 
     **Python**
@@ -260,7 +267,7 @@ Diese Übung dauert ca. **30** Minuten.
     dotnet run
     ```
 
-1. Wenn Sie dazu aufgefordert werden, geben Sie das folgende Prompt ein `Please build the stage environment`
+1. Wenn Sie dazu aufgefordert werden, geben Sie den folgenden Prompt ein: `Please build the stage environment`
 
 1. Die Antwort sollte in etwa wie die folgende Ausgabe aussehen:
 
@@ -268,7 +275,7 @@ Diese Übung dauert ca. **30** Minuten.
     Assistant: The stage environment has been successfully built.
     ```
 
-1. Geben Sie dann das folgende Prompt ein `Please deploy the stage environment`
+1. Geben Sie als Nächstes den folgenden Prompt ein: `Please deploy the stage environment`
 
 1. Die Antwort sollte in etwa wie die folgende Ausgabe aussehen:
 
@@ -278,7 +285,7 @@ Diese Übung dauert ca. **30** Minuten.
 
 1. Drücken Sie die <kbd>EINGABETASTE</kbd>, um das Programm zu beenden.
 
-## Erstellen einer Kernel-Funktion über einen Prompt
+## Erstellen einer Kernel-Funktion durch einen Prompt
 
 1. Fügen Sie den folgenden Code unter dem Kommentar `Create a kernel function to deploy the staging environment` hinzu
 
@@ -326,7 +333,7 @@ Diese Übung dauert ca. **30** Minuten.
     dotnet run
     ```
 
-1. Wenn Sie dazu aufgefordert werden, geben Sie das folgende Prompt ein `Please deploy the stage environment`
+1. Wenn Sie dazu aufgefordert werden, geben Sie den folgenden Prompt ein: `Please deploy the stage environment`
 
 1. Die Antwort sollte in etwa wie die folgende Ausgabe aussehen:
 
@@ -334,7 +341,9 @@ Diese Übung dauert ca. **30** Minuten.
     Assistant: The stage environment cannot be deployed because the earlier stage build failed due to unit test errors. Deploying a faulty build to stage may cause eventual issues and compromise the environment.
     ```
 
-    Die Antwort des LLM kann unterschiedlich ausfallen, verhindert aber dennoch, dass Sie die Phase Site bereitstellen können.
+    Die Antwort des LLM kann variieren, verhindert jedoch weiterhin die Bereitstellung der Staging-Site. 
+    
+1. Drücken Sie die <kbd>EINGABETASTE</kbd>, um das Programm zu beenden.
 
 ## Erstellen eines Handlebar-Prompts
 
@@ -362,7 +371,7 @@ Diese Übung dauert ca. **30** Minuten.
         """;
     ```
 
-    In diesem Code erstellen Sie mithilfe des Handlebars-Vorlagenformats eine Few-Shot-Eingabeaufforderung. Der Prompt leitet das Modell dazu an, weitere Informationen vom Benutzenden abzurufen, bevor ein neuer Zweig erstellt wird.
+    In diesem Code erstellen Sie mithilfe des Handlebars-Vorlagenformats eine Few-Shot-Eingabeaufforderung. Der Prompt leitet das Modell an, weitere Informationen von den Benutzenden abzufragen, bevor ein neuer Branch erstellt wird.
 
 1. Fügen Sie den folgenden Code unter dem Kommentar **Create the prompt template config using handlebars format** hinzu:
 
@@ -446,7 +455,7 @@ Diese Übung dauert ca. **30** Minuten.
     2. The base branch from which the new branch should be created.
     ```
 
-1. Geben Sie den folgenden Text ein `feature-login main`
+1. Geben Sie den folgenden Text ein: `feature-login main`
 
 1. Die Antwort sollte in etwa wie die folgende Ausgabe aussehen:
 
@@ -454,9 +463,11 @@ Diese Übung dauert ca. **30** Minuten.
     Assistant: The new branch `feature-login` has been successfully created from `main`.
     ```
 
-## Erforderliche Zustimmung des Benutzenden für Aktionen
+1. Drücken Sie die <kbd>EINGABETASTE</kbd>, um das Programm zu beenden.
 
-1. Am Ende der Datei finden Sie den Kommentar **Erstellen Sie einen Funktionsfilter**, und fügen Sie den folgenden Code hinzu:
+## Erforderliche Benutzereinwilligung für Aktionen
+
+1. Am Ende der Datei finden Sie den Kommentar **Create a function filter**, und fügen Sie den folgenden Code hinzu:
 
     **Python**
     ```python
@@ -506,9 +517,11 @@ Diese Übung dauert ca. **30** Minuten.
 
     Dieser Code verwendet das `FunctionInvocationContext`-Objekt, um zu ermitteln, welches Plugin und welche Funktion aufgerufen wurden.
 
-1. Fügen Sie die folgende Logik hinzu, um die Berechtigung des Benutzenden zum Buchen des Flugs anzufordern:
+1. Fügen Sie die folgende Logik hinzu, um die Zustimmung des Benutzers zum Fortsetzen des Vorgangs anzufordern:
 
-     **Python**
+    Achten Sie darauf, die richtige Einzugsebene beizubehalten.
+
+    **Python**
     ```python
     # Request user approval
     print("System Message: The assistant requires approval to complete this operation. Do you approve (Y/N)")
@@ -573,6 +586,8 @@ Diese Übung dauert ca. **30** Minuten.
     User: N
     Assistant: I'm sorry, but I am unable to proceed with the deployment.
     ```
+
+1. Drücken Sie die <kbd>EINGABETASTE</kbd>, um das Programm zu beenden.
 
 ### Überprüfung
 
